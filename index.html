@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.css">
   <link rel="stylesheet" href="css/hero.css?v=18">
-  <link rel="stylesheet" href="css/chapters.css?v=12">
+  <link rel="stylesheet" href="css/chapters.css?v=16">
   <link rel="stylesheet" href="css/about.css?v=7">
   <link rel="stylesheet" href="css/nav.css?v=1">
 </head>
@@ -202,6 +202,12 @@
             <h3 class="automation__title" id="automation-title">Retired a paid platform. Kept every workflow.</h3>
             <p class="automation__body">Replaced a paid automation platform with a Python and OpenAI system that maps each workflow as a graph, cutting LLM calls by 40% without losing accuracy.</p>
           </div>
+          <!-- The paid platform's tangle sorts itself into one clean graph as
+               the page scrolls; the LLM calls (dots) thin out by 40%. -->
+          <figure class="flow" aria-hidden="true">
+            <svg class="flow__svg" viewBox="0 0 560 250"></svg>
+            <figcaption class="flow__legend"><span class="flow__dot"></span>LLM calls: <b data-calls>6</b><span class="flow__sep">·</span>workflow steps: 12</figcaption>
+          </figure>
           <dl class="automation__rows" data-rows>
             <div class="automation__row">
               <dt class="automation__num"><span data-odo="150+">150+</span></dt>
@@ -214,7 +220,7 @@
               <span class="automation__rule" aria-hidden="true"></span>
             </div>
             <div class="automation__row">
-              <dt class="automation__num"><span data-odo="−40%">−40%</span></dt>
+              <dt class="automation__num"><span data-calls-pct aria-label="−40%">−40%</span></dt>
               <dd>LLM API<br>calls</dd>
             </div>
           </dl>
@@ -264,6 +270,28 @@
         </div>
       </section>
 
+      <!-- Teaching: one spark divides into forty seats, and a wave turns each
+           curious "?" into a builder while the curriculum runs. -->
+      <section class="teach" aria-labelledby="teach-title" data-teach>
+        <div class="teach__stage">
+          <div class="teach__copy">
+            <p class="tag teach__tag">Teaching</p>
+            <h3 class="teach__title" id="teach-title">Then passes it&nbsp;on.<span class="teach__origin" aria-hidden="true"></span></h3>
+            <p class="teach__line">Forty minds came in curious and left as builders, now quietly reshaping how their teams think, decide and deliver.</p>
+            <ul class="teach__stats">
+              <li data-stat="minds"><b>40</b> minds</li>
+              <li data-stat="programs"><b>2</b> programs</li>
+              <li data-stat="path"><b>Python → LLMOps</b></li>
+            </ul>
+          </div>
+          <div class="teach__field" aria-hidden="true">
+            <p class="teach__topic"><span class="teach__now">Now teaching · </span><em>Capstone + certification</em></p>
+            <div class="teach__seats"></div>
+            <div class="teach__sparks"></div>
+          </div>
+        </div>
+      </section>
+
       <!-- Hand-off: lines wipe in, then the pill floods the screen. -->
       <div class="handoff" data-handoff>
         <div class="handoff__stage">
@@ -284,5 +312,7 @@
   <script src="js/chapters.js?v=13"></script>
   <script src="js/nav.js?v=4"></script>
   <script src="js/about.js?v=10"></script>
+  <script src="js/automation.js?v=1"></script>
+  <script src="js/teach.js?v=3"></script>
 </body>
 </html>

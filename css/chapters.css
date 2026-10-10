@@ -340,9 +340,12 @@
 
 .automation__panel {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(32px, 5vw, 72px);
-  padding: clamp(32px, 5vw, 72px);
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  grid-template-areas:
+    "copy flow"
+    "rows rows";
+  gap: clamp(24px, 3vw, 44px) clamp(32px, 5vw, 72px);
+  padding: clamp(28px, 4vw, 60px);
   border-radius: 44px;
   background: var(--panel-bg);
   color: var(--panel-ink);
@@ -351,25 +354,103 @@
 .automation__title {
   margin: 0;
   font-family: var(--display);
-  font-size: clamp(2.5rem, 5vw, 4.6rem);
+  font-size: clamp(2.4rem, 3.9vw, 3.9rem);
   font-weight: 400;
   line-height: 1;
   text-transform: uppercase;
   text-wrap: balance;
 }
 
+.automation__copy {
+  grid-area: copy;
+}
+
+/* With motion, the panel pins while the graph sorts itself out
+   (js/automation.js adds .is-pinned when the panel fits the screen). */
+.automation.is-pinned::after {
+  content: "";
+  display: block;
+  height: 110svh;
+}
+
+.automation.is-pinned .automation__panel {
+  position: sticky;
+  top: max(84px, calc(50svh - var(--panel-h, 600px) / 2));
+}
+
+.flow {
+  grid-area: flow;
+  align-self: center;
+  margin: 0;
+}
+
+.flow__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.flow__edge {
+  fill: none;
+  stroke: var(--panel-ink);
+  stroke-width: 1.5;
+}
+
+.flow__node {
+  fill: var(--panel-bg);
+  stroke: var(--panel-ink);
+  stroke-opacity: 0.7;
+  stroke-width: 1.4;
+}
+
+.flow__node--end {
+  fill: var(--accent);
+  stroke: none;
+}
+
+.flow__call {
+  fill: var(--accent);
+}
+
+.flow__legend {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  color: var(--panel-muted);
+  font-size: 0.8125rem;
+}
+
+.flow__legend b {
+  color: var(--panel-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.flow__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.flow__sep {
+  opacity: 0.5;
+}
+
 .automation__body {
   max-width: 26em;
-  margin: 30px 0 0;
+  margin: 22px 0 0;
   color: var(--panel-muted);
   font-size: clamp(1rem, 1.25vw, 1.125rem);
   line-height: 1.55;
 }
 
 .automation__rows {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  grid-area: rows;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 48px);
   margin: 0;
 }
 
@@ -378,7 +459,8 @@
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  padding: 22px 0;
+  gap: 12px;
+  padding: 10px 0 16px;
 }
 
 .automation__rule {
@@ -393,7 +475,7 @@
 
 .automation__num {
   font-family: var(--display);
-  font-size: clamp(4rem, 8vw, 7rem);
+  font-size: clamp(3rem, 4.6vw, 4.6rem);
   line-height: 0.9;
 }
 
@@ -753,6 +835,209 @@
   letter-spacing: 0.04em;
 }
 
+/* ---------- Teaching: spark → forty builders ---------- */
+
+/* Resting state: every seat a solid builder, every stat shown. With motion,
+   js/chapters.js pins the stage (.is-pinned) and drives it with the scroll. */
+.teach {
+  --seat: clamp(30px, 3.5vw, 54px);
+  --seat-gap: calc(var(--seat) * 0.3);
+  --seat-bg: color-mix(in srgb, var(--ink) 7%, var(--bg));
+  --seat-line: color-mix(in srgb, var(--ink) 14%, transparent);
+  padding: 10vh 0;
+}
+
+.teach.is-pinned {
+  height: 340svh;
+  padding: 0;
+}
+
+.teach__stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(32px, 6vw, 110px);
+}
+
+.teach.is-pinned .teach__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+}
+
+.teach__title {
+  position: relative;
+  margin: 0 0 1.4rem;
+  font-family: var(--display);
+  font-size: clamp(3.4rem, 8vw, 8.5rem);
+  font-weight: 400;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+/* Where the spark is born: just after the full stop. */
+.teach__origin {
+  display: inline-block;
+  width: 0.3em;
+}
+
+.teach__line {
+  max-width: 30em;
+  margin: 0 0 2rem;
+  font-size: clamp(1rem, 1.35vw, 1.25rem);
+  line-height: 1.5;
+}
+
+.teach__stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.teach__stats li {
+  transition: opacity 0.35s ease;
+}
+
+.teach__stats li.is-dim {
+  opacity: 0.28;
+}
+
+.teach__stats b {
+  margin-right: 0.2em;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 2.4vw, 2.3rem);
+  font-weight: 400;
+}
+
+.teach__field {
+  position: relative;
+}
+
+.teach__topic {
+  margin: 0 0 1.1rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.teach__topic em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.teach__now[hidden] {
+  display: none;
+}
+
+.teach__seats {
+  display: grid;
+  grid-template-columns: repeat(8, var(--seat));
+  gap: var(--seat-gap);
+}
+
+/* --f: 0 = a curious "?", 1 = a builder (solid accent). */
+.teach-seat {
+  --f: 1;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--seat);
+  height: var(--seat);
+  overflow: hidden;
+  border: 1.5px solid var(--seat-line);
+  border-radius: 22%;
+  background: var(--seat-bg);
+  color: var(--muted);
+  font-family: var(--display);
+  font-size: calc(var(--seat) * 0.5);
+}
+
+.teach-seat::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background: var(--accent);
+  opacity: var(--f);
+}
+
+.teach-seat span {
+  opacity: calc(1 - var(--f) * 2);
+}
+
+/* The spark and its copies, flying from the headline to their seats. */
+.teach__sparks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.teach-spark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 24%, transparent);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 899px) {
+  .teach {
+    /* Eight seats across, sized to the screen. */
+    --seat: min(34px, (100vw - 2 * max(20px, 5.5vw)) / 10.4);
+  }
+
+  .teach__stage {
+    grid-template-columns: 1fr;
+    align-content: center;
+    gap: 20px;
+  }
+
+  .teach.is-pinned .teach__stage {
+    padding-top: 56px; /* clear of the navbar */
+  }
+
+  .teach__title {
+    margin-bottom: 0.8rem;
+    font-size: clamp(2.6rem, 12vw, 4.2rem);
+  }
+
+  .teach__line {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .teach__stats {
+    gap: 0.4rem 1.1rem;
+    font-size: 0.8125rem;
+  }
+
+  .teach__stats b {
+    font-size: 1.45rem;
+  }
+
+  .teach__field {
+    justify-self: center;
+  }
+
+  .teach__topic {
+    margin-bottom: 0.7rem;
+  }
+}
+
 /* ---------- Small screens ---------- */
 
 @media (max-width: 899px) {
@@ -783,7 +1068,16 @@
 
   .automation__panel {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "copy"
+      "flow"
+      "rows";
     border-radius: 28px;
+  }
+
+  .automation__rows {
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 
   .also__grid {
