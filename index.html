@@ -11,7 +11,8 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.css">
   <link rel="stylesheet" href="css/hero.css?v=18">
-  <link rel="stylesheet" href="css/chapters.css?v=16">
+  <link rel="stylesheet" href="css/chapters.css?v=21">
+  <link rel="stylesheet" href="css/builder.css?v=9">
   <link rel="stylesheet" href="css/about.css?v=7">
   <link rel="stylesheet" href="css/nav.css?v=1">
 </head>
@@ -300,7 +301,100 @@
             <span class="handoff__b">The other half is shipping.</span>
           </p>
           <span class="handoff__next"><span class="handoff__flood" aria-hidden="true"></span><span class="handoff__label">02 / Builder →</span></span>
-          <p class="handoff__reveal" aria-hidden="true"><span>02</span>Builder</p>
+          <p class="handoff__reveal" aria-hidden="true"><span class="handoff__num">02</span><span class="handoff__word">Builder</span><span class="handoff__tagline">Off the clock, still building.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter builder" id="builder" aria-labelledby="builder-title" data-where="02 · Builder">
+
+      <!-- Opener for visitors without motion. With motion it's hidden: the
+           Engineer hand-off's flood reveals BUILDER instead, resolving out of
+           vertical bars like sound becoming a word (js/builder.js). -->
+      <header class="opener b-opener">
+        <p class="opener__num">02</p>
+        <h2 class="opener__title b-opener__title" id="builder-title" aria-label="Builder">Builder</h2>
+        <div class="b-opener__lede">
+          <p class="b-opener__line">Off the clock, <em>still building.</em></p>
+          <p class="b-opener__note">Personal projects: things people hear, use and talk&nbsp;to.</p>
+        </div>
+      </header>
+
+      <!-- VoiceAI: pinned. The page's lines flatten into one line, the line
+           starts to speak, and the waveform becomes a player for real clips. -->
+      <article class="voice" aria-labelledby="voice-title" data-voice>
+        <div class="voice__stage">
+          <div class="voice__copy">
+            <p class="tag">VoiceAI</p>
+            <h3 class="voice__title" id="voice-title">Any document, retold as something worth listening to.</h3>
+            <p class="voice__body">An LLM rewrites the page into a spoken script, then a voice brings it to life: one narrator or two hosts, in any of twelve tones.</p>
+            <ul class="voice__facts">
+              <li><b>4</b> formats</li>
+              <li><b>12</b> tones</li>
+              <li><b>3</b> lengths</li>
+              <li><b>2</b> voices max</li>
+            </ul>
+            <div class="voice__chips" role="group" aria-label="Choose a sample">
+              <button type="button" class="voice__chip is-on" data-clip="documentary" aria-pressed="true">Documentary</button>
+              <button type="button" class="voice__chip" data-clip="podcast" aria-pressed="false">Podcast</button>
+              <button type="button" class="voice__chip" data-clip="truecrime" aria-pressed="false">True crime</button>
+            </div>
+          </div>
+          <div class="voice__card">
+            <p class="voice__doc-title" aria-hidden="true">The page that learned to speak</p>
+            <div class="voice__wave" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="59" aria-valuenow="0" aria-valuetext="0:00"></div>
+            <div class="voice__script" aria-live="off"></div>
+            <div class="voice__player">
+              <button type="button" class="voice__play" aria-label="Play the Documentary sample">
+                <svg class="voice__icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                <svg class="voice__icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/></svg>
+              </button>
+              <button type="button" class="voice__back" aria-label="Back 10 seconds">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.34-5.66" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3.5 3.5v4.5H8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span aria-hidden="true">10s</span>
+              </button>
+              <p class="voice__meta"><span class="voice__time">0:00 / 0:59</span> · <span class="voice__who">Documentary · George</span></p>
+            </div>
+            <audio class="voice__audio" preload="none"></audio>
+          </div>
+        </div>
+      </article>
+
+      <!-- Voice agents: one stream of inquiries splits into ribbons sized to
+           the real numbers; each label rides its ribbon's tip. -->
+      <article class="agents" aria-labelledby="agents-title" data-agents>
+        <div class="agents__copy">
+          <p class="tag">Voice agents</p>
+          <h3 class="agents__title" id="agents-title">Picks up every call. Books the meeting. Knows when to hand over.</h3>
+          <p class="agents__body">Phone agents qualify leads and answer questions; chat and email agents cover the rest, and meetings land straight in the calendar.</p>
+          <dl class="agents__stats">
+            <div><dt>100+</dt><dd>leads handled</dd></div>
+            <div class="is-accent"><dt>65%</dt><dd>of inquiries resolved without a human</dd></div>
+          </dl>
+          <ul class="chips" aria-label="Built with"><li>Retell</li><li>ElevenLabs</li><li>Twilio</li><li>n8n</li><li>Calendly</li></ul>
+        </div>
+        <figure class="flowsplit" aria-hidden="true">
+          <p class="flowsplit__in">Every inquiry: calls, chats, emails</p>
+          <svg class="flowsplit__svg" viewBox="0 0 400 340" preserveAspectRatio="none">
+            <defs><clipPath id="flowsplit-clip"><rect class="flowsplit__reveal" x="0" y="-40" width="400" height="420"/></clipPath></defs>
+            <g clip-path="url(#flowsplit-clip)">
+              <path class="flowsplit__a"/>
+              <path class="flowsplit__b"/>
+            </g>
+          </svg>
+          <p class="flowsplit__label flowsplit__label--a"><b>65%</b>resolved by AI</p>
+          <p class="flowsplit__label flowsplit__label--b"><b>35%</b>handed to a human</p>
+        </figure>
+      </article>
+
+      <!-- Hand-off: "call ended". The page squeezes into the navbar island,
+           which hangs up, and the next chapter opens. -->
+      <div class="callend" data-callend>
+        <div class="callend__stage">
+          <div class="callend__page" aria-hidden="true">
+            <p class="callend__echo">The best experiments <em>don&rsquo;t stay experiments.</em></p>
+          </div>
+          <p class="callend__pill" aria-hidden="true"><span class="callend__face"><img src="assets/nav/face.webp" alt="" width="30" height="30"></span><span class="callend__red"></span>Call ended</p>
+          <p class="callend__next"><span>03</span>Founder</p>
         </div>
       </div>
     </section>
@@ -314,5 +408,6 @@
   <script src="js/about.js?v=10"></script>
   <script src="js/automation.js?v=1"></script>
   <script src="js/teach.js?v=3"></script>
+  <script src="js/builder.js?v=11"></script>
 </body>
 </html>

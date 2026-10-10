@@ -1,0 +1,13 @@
+Most of what we write is read once—and then quietly disappears. Reports, notes, long articles: filed away, waiting for a spare hour that may never arrive.
+
+But people listen everywhere. On the commute. Out on a run. While dinner is cooking.
+
+That is the gap VoiceAI is built to enter.
+
+It doesn’t simply read a document aloud. Because when a page is read word for word, it still sounds like a page. Instead, a language model reshapes the material first—shorter sentences, a clearer thread, and just enough tension to make you want to hear what comes next.
+
+And then, the story can take different forms. One narrator guiding you through it. Two hosts exchanging thoughts like a podcast. An interview. Even a debate. The tone might become a documentary, a bedtime story, or something darker—a true-crime mystery.
+
+Only after that transformation does a voice bring it to life.
+
+The result is not a recording of text. It is the same idea, recast for the ear—told the way ideas were meant to be heard.

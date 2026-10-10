@@ -1,0 +1,609 @@
+/* 02 Builder: opener, VoiceAI, voice agents and the "call ended" hand-off.
+   Shares tokens with hero.css and helpers (.tag, .chips, .opener) with
+   chapters.css. Resting styles are the final, visible state; js/builder.js
+   adds the motion. Pinning only happens under html.has-motion. */
+
+/* ---------- Opener (only without motion; see index.html) ---------- */
+
+.has-motion .b-opener {
+  display: none;
+}
+
+.b-opener__lede {
+  max-width: 15em;
+  padding-bottom: 1.2rem;
+  text-align: right;
+}
+
+.b-opener__line {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 2.8vw, 2.6rem);
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.b-opener__line em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.b-opener__note {
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+  font-size: clamp(0.875rem, 1vw, 1rem);
+  line-height: 1.4;
+}
+
+/* ---------- VoiceAI ---------- */
+
+.voice {
+  --card-pad: clamp(20px, 2.2vw, 30px);
+  padding: 6vh 0 10vh;
+}
+
+.has-motion .voice.is-pinned {
+  height: 230svh;
+  padding: 0;
+}
+
+.voice__stage {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 80px);
+}
+
+.has-motion .voice.is-pinned .voice__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  padding-top: 70px; /* clear of the navbar */
+}
+
+.voice__title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.4rem, 4.2vw, 4.2rem);
+  font-weight: 400;
+  line-height: 0.95;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.voice__body {
+  max-width: 30em;
+  margin: 1.2rem 0 0;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1.15vw, 1.0625rem);
+  line-height: 1.55;
+}
+
+.voice__facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.6rem;
+  margin: 1.4rem 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.voice__facts b {
+  display: block;
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(1.7rem, 2.4vw, 2.3rem);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.voice__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1.4rem;
+}
+
+.voice__chip {
+  padding: 0.6em 1.05em;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: none;
+  color: var(--ink);
+  font: 500 0.8125rem/1 var(--body);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.voice__chip:hover {
+  border-color: var(--ink);
+}
+
+.voice__chip.is-on {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 700;
+}
+
+.voice__chip:focus-visible,
+.voice__play:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* The card: a page of text that becomes a player. */
+.voice__card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--card-pad);
+  border-radius: 28px;
+  background: var(--glow);
+}
+
+.voice__doc-title {
+  margin: 0 0 14px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.voice__wave {
+  position: relative;
+  height: clamp(110px, 17svh, 170px);
+}
+
+.voice__bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--ink) 30%, transparent);
+}
+
+/* Once the player is ready, switching clips glides the bars to new heights. */
+.voice.is-ready .voice__bar {
+  transition: top 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), height 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s;
+}
+
+.voice__bar.is-lit {
+  background: var(--accent);
+}
+
+.voice__lane {
+  position: absolute;
+  left: 0;
+  margin: 0;
+  padding-left: 8px; /* clear of the playhead at 0:00 */
+  line-height: 14px;
+  color: var(--muted);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.voice.is-podcast .voice__lane {
+  opacity: 1;
+}
+
+/* Script: a window of three lines; the one being spoken is lit. */
+.voice__script {
+  position: relative;
+  height: calc(1.45em * 4 + 24px);
+  margin-top: 18px;
+  overflow: hidden;
+  font-size: clamp(0.95rem, 1.1vw, 1.0625rem);
+  line-height: 1.45;
+  -webkit-mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent);
+}
+
+.voice__lines {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Each line is a button: click to jump the audio there. */
+.voice__lines li {
+  margin-bottom: 8px;
+  overflow: hidden;
+  color: color-mix(in srgb, var(--ink) 55%, transparent);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.voice__lines li:hover {
+  color: var(--ink);
+}
+
+.voice__lines li.is-now {
+  color: var(--ink);
+  font-weight: 500;
+  white-space: normal;
+}
+
+.voice__lines b {
+  margin-right: 0.4em;
+  color: var(--accent);
+  font-size: 0.8em;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* The waveform doubles as the seek bar once the player is ready. */
+.voice.is-ready .voice__wave {
+  cursor: pointer;
+  touch-action: none;
+}
+
+.voice__wave:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  border-radius: 6px;
+}
+
+.voice__head {
+  position: absolute;
+  top: -6px;
+  bottom: -6px;
+  left: 0;
+  width: 2px;
+  border-radius: 2px;
+  background: var(--ink);
+  opacity: 0;
+  transition: opacity 0.2s;
+  pointer-events: none;
+}
+
+.voice.is-ready.has-started .voice__head {
+  opacity: 1;
+}
+
+/* "Back 10s": a small pill, icon then label, so nothing overlaps. */
+.voice__back {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 40px;
+  padding: 0 14px 0 11px;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: none;
+  color: var(--ink);
+  font: 700 0.8125rem/1 var(--body);
+  cursor: pointer;
+}
+
+.voice__back:hover {
+  border-color: var(--ink);
+}
+
+.voice__back svg {
+  width: 17px;
+  height: 17px;
+}
+
+.voice__back:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.voice__player {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.voice__play {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--bg);
+  cursor: pointer;
+  box-shadow: 0 0 0 calc(var(--level, 0) * 14px) color-mix(in srgb, var(--accent) 38%, transparent);
+  transform: scale(calc(1 + var(--level, 0) * 0.12));
+}
+
+.voice__play svg {
+  width: 22px;
+  height: 22px;
+}
+
+.voice__icon-pause,
+.voice.is-playing .voice__icon-play {
+  display: none;
+}
+
+.voice.is-playing .voice__icon-pause {
+  display: block;
+}
+
+.voice__meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Voice agents ---------- */
+
+.agents {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 80px);
+  padding: 10vh 0 12vh;
+}
+
+.agents__title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.3rem, 3.9vw, 3.9rem);
+  font-weight: 400;
+  line-height: 0.95;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.agents__body {
+  max-width: 30em;
+  margin: 1.2rem 0 0;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1.15vw, 1.0625rem);
+  line-height: 1.55;
+}
+
+.agents__stats {
+  display: flex;
+  gap: clamp(20px, 3vw, 40px);
+  margin: 1.6rem 0 0;
+}
+
+.agents__stats dt {
+  font-family: var(--display);
+  font-size: clamp(2.6rem, 4vw, 3.8rem);
+  line-height: 1;
+}
+
+.agents__stats .is-accent dt {
+  color: var(--accent);
+}
+
+.agents__stats dd {
+  max-width: 12em;
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
+
+/* The split: a fixed-ratio box; JS draws the ribbons and moves the labels. */
+.flowsplit {
+  position: relative;
+  aspect-ratio: 400 / 340;
+  margin: 0;
+}
+
+.flowsplit__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.flowsplit__a {
+  fill: var(--accent);
+}
+
+.flowsplit__b {
+  fill: color-mix(in srgb, var(--ink) 26%, transparent);
+}
+
+.flowsplit__in {
+  position: absolute;
+  left: 0;
+  margin: 0;
+  max-width: 42%;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.3;
+  transform: translateY(calc(-100% - 6px));
+}
+
+.flowsplit__label {
+  position: absolute;
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+  transform: translateY(-50%);
+}
+
+.flowsplit__label b {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 2.6vw, 2.5rem);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.flowsplit__label--a b {
+  color: var(--accent);
+}
+
+/* ---------- Hand-off: "call ended" ---------- */
+
+/* Without motion: just the closing line, "03 Founder". */
+.callend__stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 10vh 0 16vh;
+}
+
+.callend__page,
+.callend__pill {
+  display: none;
+}
+
+.callend__next {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(5rem, 15vw, 14rem);
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+
+.callend__next span {
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  letter-spacing: 0.04em;
+}
+
+.has-motion .callend {
+  height: 300svh;
+  margin: 0 calc(var(--pad) * -1);
+}
+
+.has-motion .callend__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* The page that squeezes into the island. JS scales it toward the pill. */
+.has-motion .callend__page {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid transparent; /* JS shows it once the squeeze starts */
+  background: var(--bg);
+  transform-origin: 50% 0;
+  will-change: transform;
+}
+
+.callend__echo {
+  margin: 0;
+  padding: 0 var(--pad);
+  font-family: var(--display);
+  font-size: clamp(3rem, 9vw, 8.5rem);
+  line-height: 0.92;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.callend__echo em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.has-motion .callend__pill {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 5px 18px 5px 5px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 0.875rem;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translateX(-50%);
+}
+
+.callend__face {
+  display: block;
+  width: 36px;
+  height: 36px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--bg) 92%, var(--accent));
+}
+
+.callend__face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.callend__red {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff3b30;
+}
+
+.has-motion .callend__next {
+  position: absolute;
+  inset: 0;
+  justify-content: center;
+  opacity: 0;
+}
+
+/* The real navbar steps aside while its stand-in hangs up. */
+.is-calling .island {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 899px) {
+  .b-opener__lede {
+    max-width: none;
+    text-align: left;
+  }
+
+  .voice__stage,
+  .agents {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .voice__chips {
+    margin-top: 1rem;
+  }
+
+  .voice__title {
+    font-size: clamp(2rem, 9vw, 2.8rem);
+  }
+
+  .agents {
+    gap: 40px;
+  }
+
+  .flowsplit {
+    width: 88%;
+  }
+}

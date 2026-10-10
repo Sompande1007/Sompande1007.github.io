@@ -1,0 +1,15 @@
+HOST A: Most of what we write is never read twice. Reports, notes, and long articles end up in folders, waiting for a quiet hour that may never arrive.
+
+HOST B: But people listen everywhere — on the commute, out for a run, or while making dinner. That’s the gap VoiceAI is designed to fill.
+
+HOST A: It doesn’t simply read a document aloud. Because when a page is read word for word, it still sounds like a page.
+
+HOST B: Instead, a language model reshapes the material first. It shortens the sentences, finds a clear thread, and gives the listener a reason to keep going.
+
+HOST A: The result can be one narrator, or two hosts trading thoughts like a podcast, an interview, or even a debate.
+
+HOST B: And the tone can change too — documentary, bedtime story, or true-crime mystery.
+
+HOST A: Only after that does a voice bring the words to life.
+
+HOST B: So it isn’t a recording of text. It’s the same idea, told in the way ideas are meant to be heard.
