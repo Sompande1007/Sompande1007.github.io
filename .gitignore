@@ -1,0 +1,5 @@
+hero-frames/
+hero-frames-cutout/
+.claude/
+.DS_Store
+__pycache__/

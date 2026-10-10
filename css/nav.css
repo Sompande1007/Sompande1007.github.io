@@ -1,0 +1,327 @@
+/* Navbar "island": a small solid pill at top centre with the avatar and the
+   current section. Its colours are the page's, inverted, so it reads over
+   anything. Hover-capable screens expand it into the full menu; touch
+   screens get a menu button that opens a full-screen menu (.menu). */
+
+.island {
+  --pill-bg: var(--ink);
+  --pill-fg: var(--bg);
+  position: fixed;
+  z-index: 50;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: opacity 0.3s ease;
+}
+
+/* Steps aside while the camera is inside the lens (hero → About). */
+.is-diving .island {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.island__bar {
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 999px;
+  background: var(--pill-bg);
+  color: var(--pill-fg);
+  box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.45);
+  white-space: nowrap;
+}
+
+.island__face {
+  flex: none;
+  display: block;
+  width: 36px;
+  height: 36px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--pill-fg) 92%, var(--accent));
+}
+
+.island__face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Where you are: collapses away when the menu expands. */
+.island__where {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  max-width: 260px;
+  padding: 0 14px 0 11px;
+  overflow: hidden;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: max-width 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease, padding 0.45s ease;
+}
+
+.island__where [data-where] {
+  display: inline-block;
+}
+
+.island__dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* The full menu: hidden at 0 width, grows to its natural width on hover. */
+.island__links {
+  display: grid;
+  grid-template-columns: 0fr;
+  transition: grid-template-columns 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.island__links-inner {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.island__logo {
+  margin: 0 10px 0 8px;
+  font-family: var(--display);
+  font-size: 1.2rem;
+  letter-spacing: 0.02em;
+}
+
+.island__link {
+  padding: 0.7em 1.1em;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.island__link:hover {
+  background: color-mix(in srgb, var(--pill-fg) 14%, transparent);
+}
+
+.island__link.is-current {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.island__sep {
+  width: 1px;
+  height: 22px;
+  margin: 0 6px;
+  background: color-mix(in srgb, var(--pill-fg) 25%, transparent);
+}
+
+.island .theme-toggle {
+  width: 36px;
+  height: 36px;
+  border-color: color-mix(in srgb, var(--pill-fg) 35%, transparent);
+  color: var(--pill-fg);
+}
+
+.island .theme-toggle:hover {
+  background: var(--pill-fg);
+  color: var(--pill-bg);
+}
+
+.island__resume {
+  margin-left: 6px;
+  padding: 0.7em 1.15em;
+  border-radius: 999px;
+  background: var(--pill-fg);
+  color: var(--pill-bg);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.island__resume:hover {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.island__menu-btn {
+  display: none;
+}
+
+.island a:focus-visible,
+.island button:focus-visible,
+.menu a:focus-visible,
+.menu button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Hover or keyboard focus expands the island into the menu. */
+@media (hover: hover) and (min-width: 760px) {
+  .island:hover .island__where,
+  .island:focus-within .island__where {
+    max-width: 0;
+    padding: 0;
+    opacity: 0;
+  }
+
+  .island:hover .island__links,
+  .island:focus-within .island__links {
+    grid-template-columns: 1fr;
+  }
+
+  .island:hover .island__links-inner,
+  .island:focus-within .island__links-inner {
+    opacity: 1;
+    transition-delay: 0.12s;
+  }
+}
+
+/* Touch or narrow screens: no hover menu, a menu button instead. */
+@media (hover: none), (max-width: 759px) {
+  .island__links {
+    display: none;
+  }
+
+  .island__menu-btn {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--pill-fg) 14%, transparent);
+    color: var(--pill-fg);
+    cursor: pointer;
+  }
+
+  .island__menu-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* ---------- Full-screen menu (touch screens) ---------- */
+
+.menu {
+  position: fixed;
+  z-index: 80;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 104px 24px 28px;
+  overflow: hidden;
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.menu[hidden] {
+  display: none;
+}
+
+/* The island becomes a "Close" pill in the same spot. */
+.menu__close {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 16px 5px 5px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--ink);
+  font: 700 0.8125rem/1 var(--body);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+.menu__close img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--ink) 92%, var(--accent));
+}
+
+.menu__links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu__links a {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--bg) 14%, transparent);
+}
+
+.menu__links small {
+  width: 22px;
+  color: var(--accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.menu__links span {
+  font-family: var(--display);
+  font-size: clamp(3rem, 15vw, 4.5rem);
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.menu__links a.is-current span {
+  color: var(--accent);
+}
+
+.menu__foot {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.menu .theme-toggle {
+  width: 48px;
+  height: 48px;
+  border-color: color-mix(in srgb, var(--bg) 35%, transparent);
+  color: var(--bg);
+}
+
+.menu__resume {
+  padding: 15px 24px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Waving avatar peeking in from the corner. */
+.menu__wave {
+  position: absolute;
+  right: -44px;
+  bottom: -34px;
+  width: auto;
+  height: min(40svh, 340px);
+  transform: rotate(-6deg);
+  pointer-events: none;
+}

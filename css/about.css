@@ -1,0 +1,254 @@
+/* About.
+   Default (no motion): a simple stacked intro — greeting, avatar, lines.
+   With the lens dive (html.has-dive): the section's first screen overlaps the
+   end of the hero; its stage pins and plays one line at a time (js/about.js). */
+
+.about {
+  position: relative;
+  padding: 0 var(--pad);
+}
+
+.about__stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 40px;
+  align-items: center;
+  padding: clamp(96px, 12vh, 140px) 0;
+}
+
+.about__tag {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+/* Static layout: beats stack as a short read. */
+.about__beats {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.about__beats .greet {
+  position: static;
+  max-width: none;
+  margin-bottom: 12px;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-size: clamp(3.5rem, 9vw, 9rem);
+  transform: none;
+}
+
+.about__beat {
+  max-width: 17em;
+  margin: 0;
+  font-size: clamp(1.5rem, 3vw, 2.6rem);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+}
+
+.about__beat em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.about__beat--lines {
+  max-width: none;
+  margin-top: 18px;
+  font-family: var(--display);
+  font-size: clamp(2.4rem, 5.2vw, 5rem);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.about__beat--lines span {
+  display: block;
+}
+
+/* Blocks squash against what they land on: scale from the bottom edge. */
+.has-dive .about__beat--lines span {
+  width: max-content;
+  transform-origin: 0 100%;
+}
+
+/* ---------- Avatar ---------- */
+
+.about__figure {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: min(720px, 80svh);
+}
+
+.about__glow {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  width: min(520px, 100%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent 80%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.about__pose {
+  position: relative;
+  height: 96%;
+  transform-origin: 50% 100%;
+}
+
+.about__pose img {
+  display: block;
+  width: auto;
+  height: 100%;
+}
+
+/* The scroll-scrubbed avatar (motion only). */
+.about__canvas {
+  display: none;
+}
+
+.has-dive .about__pose {
+  display: none;
+}
+
+.has-dive .about__canvas {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.about__cue {
+  display: none;
+}
+
+/* ---------- Pinned stage (with the lens dive) ---------- */
+
+.has-dive .about {
+  /* 100svh of stage + room for the lines to play. */
+  height: 490svh; /* 7 lines at ~55svh each */
+  /* Overlap the hero's last screen so the stage takes over where the dive ends. */
+  margin-top: -100svh;
+  padding: 0;
+  pointer-events: none;
+}
+
+.has-dive .about.is-live {
+  pointer-events: auto;
+}
+
+.has-dive .about__stage {
+  position: sticky;
+  top: 0;
+  display: block;
+  height: 100svh;
+  padding: 0;
+  overflow: hidden;
+  background: var(--bg);
+  /* Hidden until the dive hands over (js/about.js adds .is-live). */
+  visibility: hidden;
+}
+
+.has-dive .about.is-live .about__stage {
+  visibility: visible;
+}
+
+.has-dive .about__tag {
+  position: absolute;
+  top: clamp(96px, 14vh, 130px);
+  left: var(--pad);
+}
+
+/* Every line sits at the greeting's spot; one shows at a time. */
+.has-dive .about__beats {
+  display: block;
+}
+
+.has-dive .about__beat {
+  position: absolute;
+  top: var(--greet-y, 50%);
+  left: var(--pad);
+  width: min(46vw, 14.5em);
+  transform: translateY(-50%);
+  transform-origin: 0 50%;
+  font-size: clamp(1.9rem, 3.9vw, 3.75rem);
+  line-height: 1.12;
+  opacity: 0;
+}
+
+/* Must match the dive's greeting exactly (see .greet in hero.css). */
+.has-dive .about__beats .greet {
+  width: auto;
+  max-width: none;
+  margin: 0;
+  font-weight: 400;
+  letter-spacing: 0;
+  font-size: clamp(3.5rem, 12.5vw, 14rem);
+  line-height: 1;
+  opacity: 1;
+}
+
+.has-dive .about__beat--lines {
+  width: auto;
+  margin: 0;
+  font-size: clamp(2.6rem, 5.6vw, 5.6rem);
+}
+
+.has-dive .about__figure {
+  position: absolute;
+  right: var(--pad);
+  bottom: 0;
+  width: min(40vw, 560px);
+  height: min(86svh, 800px);
+}
+
+.has-dive .about__cue {
+  position: absolute;
+  bottom: clamp(28px, 6vh, 56px);
+  left: var(--pad);
+  display: block;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
+/* ---------- Narrow / portrait screens ---------- */
+
+@media (max-width: 899px) {
+  .about__stage {
+    grid-template-columns: 1fr;
+  }
+
+  .about__figure {
+    height: min(460px, 56svh);
+  }
+}
+
+@media (max-width: 759px), (max-aspect-ratio: 1/1) {
+  .has-dive .about__beat {
+    top: var(--greet-y, 32%);
+    width: auto;
+    right: var(--pad);
+    font-size: clamp(1.6rem, 7vw, 2.6rem);
+  }
+
+  .has-dive .about__beats .greet {
+    --greet-y: 32%;
+    font-size: 19vw;
+  }
+
+  .has-dive .about__figure {
+    right: 50%;
+    width: min(92vw, 420px);
+    height: 46svh;
+    transform: translateX(50%);
+  }
+
+}
