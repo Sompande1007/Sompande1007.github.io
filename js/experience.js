@@ -232,24 +232,32 @@
     } else {
       window.scrollTo(0, y);
     }
+    // The scroll that brought us here mustn't also turn the dial: wait for a
+    // pause or a clearly new push.
     armed = false;
     lastWheel = performance.now();
+    lastMag = 400;
   }
 
   function release(dir) {
     locked = false;
     releasing = true;
     const y = dir > 0 ? sectionTop() + section.offsetHeight : sectionTop() - window.innerHeight * 0.6;
+    let finished = false;
     const done = () => {
+      if (finished) return;
+      finished = true;
       releasing = false;
       prevTop = section.getBoundingClientRect().top;
     };
+    // If the visitor keeps scrolling, the glide is interrupted and never
+    // reports finishing, so don't wait for it forever.
+    setTimeout(done, 1100);
     if (lenis()) {
       lenis().start();
       lenis().scrollTo(y, { duration: 1, onComplete: done });
     } else {
       window.scrollTo({ top: y, behavior: "smooth" });
-      setTimeout(done, 900);
     }
   }
 
@@ -267,11 +275,22 @@
   // Lock when the section's top reaches the top of the screen: coming down,
   // on the first stop; coming back up, on the last.
   let prevTop = section.getBoundingClientRect().top;
+  // A jump to another section (a nav link, "Back to top") passes straight
+  // through: don't catch it. Jumps to #experience itself still lock.
+  let passingUntil = 0;
+  let fromStart = false; // a nav click to #experience starts at the first stop
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest && e.target.closest('a[href^="#"]');
+    if (!a) return;
+    if (a.getAttribute("href") === "#experience") fromStart = true;
+    else passingUntil = performance.now() + 2500;
+  });
   function watch() {
     const top = section.getBoundingClientRect().top;
-    if (!locked && !releasing) {
+    if (!locked && !releasing && performance.now() > passingUntil) {
       if (prevTop > 1 && top <= 1) lock(0);
-      else if (prevTop < -1 && top >= -1) lock(N - 1);
+      else if (prevTop < -1 && top >= -1) lock(fromStart ? 0 : N - 1);
+      if (locked) fromStart = false;
     }
     prevTop = top;
   }

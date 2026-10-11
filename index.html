@@ -15,6 +15,7 @@
   <link rel="stylesheet" href="css/builder.css?v=11">
   <link rel="stylesheet" href="css/founder.css?v=6">
   <link rel="stylesheet" href="css/experience.css?v=5">
+  <link rel="stylesheet" href="css/contact.css?v=3">
   <link rel="stylesheet" href="css/about.css?v=8">
   <link rel="stylesheet" href="css/nav.css?v=1">
 </head>
@@ -544,6 +545,69 @@
         </div>
       </div>
     </section>
+
+    <section class="chapter contact" id="contact" aria-labelledby="contact-title" data-where="Contact" data-contact>
+      <div class="ct__stage">
+        <header class="ct__head">
+          <p class="tag">Contact</p>
+          <h2 class="ct__title" id="contact-title">Got a &ldquo;what if&rdquo;? <em>Let&rsquo;s make it real.</em></h2>
+        </header>
+
+        <!-- The navbar island glides here and expands into this card
+             (js/contact.js). The shell is the growing shape; the card's
+             content arrives once it has grown. -->
+        <div class="ct__shell" aria-hidden="true"></div>
+        <span class="ct__pill" aria-hidden="true"><img src="assets/nav/face.webp" alt="" width="36" height="36"><i></i>Contact</span>
+
+        <div class="ct__card">
+          <div class="ct__who">
+            <img class="ct__face" src="assets/nav/face.webp" alt="" width="64" height="64">
+            <div>
+              <p class="ct__name">Som Pande</p>
+              <p class="ct__role">AI Engineer · Co-founder, NuumX</p>
+            </div>
+          </div>
+
+          <!-- Messages go to an Apps Script web app that emails them to Som
+               (scripts/contact-form.gs). Set data-endpoint to its URL. -->
+          <form class="ct__form" data-endpoint="https://script.google.com/macros/s/AKfycbzip0zafC5NlV3swNZ_P3oGSY9q13Hzq6UzP9oUOxv_i7o-DlwHs48N-fmIJVIi0QXV/exec" novalidate>
+            <label class="ct__field">
+              <span>Your name</span>
+              <input name="name" type="text" autocomplete="name" placeholder="Jane Doe" required maxlength="100">
+            </label>
+            <label class="ct__field">
+              <span>Your email</span>
+              <input name="email" type="email" autocomplete="email" placeholder="you@company.com" required maxlength="200">
+            </label>
+            <label class="ct__field ct__field--msg">
+              <span>Message</span>
+              <textarea name="message" rows="3" placeholder="What&rsquo;s on your mind?" required maxlength="5000"></textarea>
+            </label>
+            <!-- A trap for bots: hidden from people and screen readers. -->
+            <label class="ct__trap" aria-hidden="true">Website <input name="website" type="text" tabindex="-1" autocomplete="off"></label>
+            <div class="ct__row">
+              <a class="ct__link" href="https://www.linkedin.com/in/sompande" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+              <a class="ct__link" href="assets/Som-Pande-Resume.pdf" target="_blank" rel="noopener">Résumé <span aria-hidden="true">↓</span></a>
+              <button class="ct__send" type="submit">Send message <span aria-hidden="true">→</span></button>
+            </div>
+            <p class="ct__status" role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="ct__done" hidden>
+            <span class="ct__tick" aria-hidden="true">✓</span>
+            <p class="ct__done-title">Message sent</p>
+            <p class="ct__done-body">It&rsquo;s in Som&rsquo;s inbox. Expect a reply soon.</p>
+            <button class="ct__again" type="button">Send another</button>
+          </div>
+        </div>
+
+        <footer class="ct__foot">
+          <span>© 2026 Som Pande</span>
+          <span>Designed and built by hand</span>
+          <a href="#top">Back to top ↑</a>
+        </footer>
+      </div>
+    </section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
@@ -556,6 +620,7 @@
   <script src="js/teach.js?v=3"></script>
   <script src="js/builder.js?v=14"></script>
   <script src="js/founder.js?v=2"></script>
-  <script src="js/experience.js?v=8"></script>
+  <script src="js/experience.js?v=12"></script>
+  <script src="js/contact.js?v=4"></script>
 </body>
 </html>
