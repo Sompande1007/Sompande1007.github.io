@@ -14,7 +14,8 @@
   <link rel="stylesheet" href="css/chapters.css?v=21">
   <link rel="stylesheet" href="css/builder.css?v=11">
   <link rel="stylesheet" href="css/founder.css?v=6">
-  <link rel="stylesheet" href="css/about.css?v=7">
+  <link rel="stylesheet" href="css/experience.css?v=5">
+  <link rel="stylesheet" href="css/about.css?v=8">
   <link rel="stylesheet" href="css/nav.css?v=1">
 </head>
 <body>
@@ -477,6 +478,72 @@
         </div>
       </article>
     </section>
+
+    <section class="chapter experience" id="experience" aria-labelledby="experience-title" data-where="Experience" data-exp>
+      <div class="exp__stage">
+        <p class="tag exp__tag" id="experience-title">Experience</p>
+
+        <!-- The time-dial: the top of a large wheel (js/experience.js draws it).
+             Scrolling spins it between stops; at each stop it locks. -->
+        <div class="exp__dial" aria-hidden="true">
+          <svg class="exp__svg"></svg>
+          <span class="exp__year">2019</span>
+        </div>
+
+        <ol class="exp__stops">
+          <li class="exp__stop" data-y="2019.6" data-short="B.Tech">
+            <p class="exp__when">2019</p>
+            <h3 class="exp__title">B.Tech, <em>Computer Science Engineering</em></h3>
+            <p class="exp__detail">Shiv Nadar Institute of Eminence · 2019 – 2023</p>
+          </li>
+          <li class="exp__stop" data-y="2023.5">
+            <p class="exp__when">2023</p>
+            <h3 class="exp__title">Graduated</h3>
+            <p class="exp__detail">B.Tech, Computer Science Engineering · Shiv Nadar Institute of Eminence</p>
+          </li>
+          <li class="exp__stop" data-y="2024.0" data-short="KPMG Lighthouse">
+            <p class="exp__when">2024</p>
+            <h3 class="exp__title">AI Engineer · <em>KPMG Lighthouse</em></h3>
+            <p class="exp__detail">Workflow automation, data pipelines and production APIs · 2024 – 2025</p>
+            <a class="exp__go" href="#engineer">See 01 Engineer ↑</a>
+          </li>
+          <li class="exp__stop" data-y="2025.0" data-short="NuumX">
+            <p class="exp__when">2025</p>
+            <h3 class="exp__title">Co-founder · <em>NuumX</em></h3>
+            <p class="exp__detail">An AI transformation company · 2025 – present</p>
+            <a class="exp__go" href="#founder">See 03 Founder ↑</a>
+          </li>
+          <li class="exp__stop" data-y="2025.92" data-short="PwC IDAC">
+            <p class="exp__when">2025</p>
+            <h3 class="exp__title">Associate AI Engineer · <em>PwC IDAC</em></h3>
+            <p class="exp__detail">AI training programs for client teams · 2025 – present</p>
+            <a class="exp__go" href="#engineer">See 01 Engineer ↑</a>
+          </li>
+          <li class="exp__stop" data-y="2026.42" data-short="SF AI startup">
+            <p class="exp__when">2026</p>
+            <h3 class="exp__title">Founding team · <em>AI Engineer</em></h3>
+            <p class="exp__detail">San Francisco AI startup · 2026 – present</p>
+          </li>
+          <li class="exp__stop exp__stop--now" data-y="2026.8" data-short="Now">
+            <p class="exp__when">Now</p>
+            <h3 class="exp__title">Current roles</h3>
+            <ul class="exp__roles">
+              <li><small>2025 – present</small><b>NuumX</b><span>Co-founder</span></li>
+              <li><small>2025 – present</small><b>PwC IDAC</b><span>Associate AI Engineer</span></li>
+              <li><small>2026 – present</small><b>San Francisco AI startup</b><span>Founding team · AI Engineer</span></li>
+            </ul>
+            <p class="exp__cert"><b>Microsoft Certified</b> · Azure AI Engineer Associate</p>
+            <p class="exp__otc">Off the clock: All India Open badminton, state-level table tennis, a good book, a new city.</p>
+          </li>
+        </ol>
+
+        <div class="exp__foot">
+          <button type="button" class="exp__btn exp__prev" aria-label="Previous stop">←</button>
+          <span class="exp__dots" aria-hidden="true"></span>
+          <button type="button" class="exp__btn exp__next" aria-label="Next stop">→</button>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
@@ -484,10 +551,11 @@
   <script src="https://cdn.jsdelivr.net/npm/motion@14.0.0/dist/motion.js"></script>
   <script src="js/chapters.js?v=13"></script>
   <script src="js/nav.js?v=5"></script>
-  <script src="js/about.js?v=10"></script>
+  <script src="js/about.js?v=11"></script>
   <script src="js/automation.js?v=1"></script>
   <script src="js/teach.js?v=3"></script>
-  <script src="js/builder.js?v=13"></script>
+  <script src="js/builder.js?v=14"></script>
   <script src="js/founder.js?v=2"></script>
+  <script src="js/experience.js?v=8"></script>
 </body>
 </html>

@@ -1,0 +1,363 @@
+/* Experience: one timeline. With motion (html.has-motion) the stage pins and
+   a time-dial spins between stops, locking at each one (js/experience.js).
+   Without it, the stops are a plain list, newest last. */
+
+.experience {
+  --dial-top: 22%; /* where the dial's peak sits in the stage */
+  padding: 12vh var(--pad);
+}
+
+.exp__tag {
+  margin-bottom: 2rem;
+}
+
+.exp__dial,
+.exp__foot {
+  display: none;
+}
+
+.exp__stops {
+  display: grid;
+  gap: 2.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.exp__when {
+  margin: 0;
+  color: var(--accent);
+  font-family: var(--display);
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+  letter-spacing: 0.02em;
+}
+
+.exp__title {
+  margin: 0.5rem 0 0.7rem;
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 5.2vw, 5.4rem);
+  font-weight: 400;
+  line-height: 0.95;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.exp__title em {
+  color: var(--accent);
+  font-style: normal;
+}
+
+.exp__detail {
+  margin: 0;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1.25vw, 1.15rem);
+  line-height: 1.5;
+}
+
+.exp__go {
+  display: inline-block;
+  margin-top: 1.2rem;
+  padding: 0.75em 1.2em;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: border-color 0.2s;
+}
+
+.exp__go:hover {
+  border-color: var(--ink);
+}
+
+.exp__roles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin: 1.4rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.exp__roles li {
+  width: min(250px, 100%);
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: var(--glow);
+  text-align: left;
+}
+
+.exp__roles small {
+  display: block;
+  color: var(--accent);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.exp__roles b {
+  display: block;
+  margin: 6px 0 3px;
+  font-size: 1.0625rem;
+}
+
+.exp__roles span {
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.exp__cert {
+  margin: 1.8rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.exp__cert b {
+  color: var(--ink);
+}
+
+/* Off the clock: deliberately quiet. */
+.exp__otc {
+  margin: 0.8rem 0 0;
+  color: color-mix(in srgb, var(--muted) 65%, transparent);
+  font-size: 0.75rem;
+}
+
+/* ---------- With motion: the pinned dial ---------- */
+
+.has-motion .experience {
+  height: var(--exp-height, 600svh);
+  padding: 0;
+}
+
+.has-motion .exp__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.has-motion .exp__tag {
+  position: absolute;
+  top: 88px;
+  left: var(--pad);
+  margin: 0;
+}
+
+.has-motion .exp__dial {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+
+.exp__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.exp__rim {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+
+.exp__tick {
+  stroke: var(--tick, color-mix(in srgb, var(--ink) 30%, transparent));
+  stroke-width: 1;
+}
+
+.exp__tick--year {
+  stroke: var(--ink);
+  stroke-width: 1.8;
+}
+
+.exp__label {
+  fill: var(--muted);
+  font: 500 13px var(--body);
+}
+
+.exp__peak {
+  fill: var(--accent);
+}
+
+.exp__mark {
+  fill: var(--ink);
+}
+
+.exp__near {
+  fill: var(--ink);
+  font: 700 13px var(--body);
+}
+
+/* The year at the dial's peak. */
+.has-motion .exp__year {
+  position: absolute;
+  top: calc(var(--dial-top) + 22px);
+  left: 50%;
+  min-width: 130px;
+  padding: 0.55em 1.2em;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+/* The stops: stacked in the same spot; JS shows the current one. */
+.has-motion .exp__stops {
+  display: block;
+}
+
+.has-motion .exp__stop {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  width: min(1100px, calc(100% - 2 * var(--pad)));
+  text-align: center;
+  opacity: 0;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.has-motion .exp__stop.is-current {
+  pointer-events: auto;
+}
+
+.has-motion .exp__stop--now {
+  top: 40%;
+}
+
+.has-motion .exp__foot {
+  position: absolute;
+  right: var(--pad);
+  bottom: 26px;
+  left: var(--pad);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.exp__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.7em 1.1em;
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  background: none;
+  color: var(--ink);
+  font: 700 0.8125rem/1 var(--body);
+  cursor: pointer;
+  transition: border-color 0.2s, opacity 0.2s;
+}
+
+.exp__btn:hover {
+  border-color: var(--ink);
+}
+
+.exp__btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.exp__btn:focus-visible,
+.exp__go:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.exp__dots {
+  display: flex;
+  gap: 8px;
+}
+
+.exp__dots i {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--line);
+  transition: width 0.3s, background-color 0.3s;
+}
+
+.exp__dots i.is-done {
+  background: var(--muted);
+}
+
+.exp__dots i.is-on {
+  width: 22px;
+  background: var(--accent);
+}
+
+@media (max-width: 899px) {
+  .experience {
+    --dial-top: 20%;
+  }
+
+  .has-motion .exp__stop {
+    top: 42%;
+  }
+
+  .has-motion .exp__stop--now {
+    top: 31%;
+  }
+
+  .exp__btn .exp__btn-name {
+    display: none;
+  }
+
+  /* Compact rows on phones: name and title left, years right. */
+  .exp__roles {
+    gap: 6px;
+    margin-top: 1rem;
+  }
+
+  .exp__roles li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    column-gap: 10px;
+    width: 100%;
+    padding: 10px 14px;
+  }
+
+  .exp__roles small {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 0.625rem;
+  }
+
+  .exp__roles b {
+    grid-column: 1;
+    grid-row: 1;
+    margin: 0;
+    font-size: 0.9375rem;
+  }
+
+  .exp__roles span {
+    grid-column: 1 / -1;
+    font-size: 0.75rem;
+  }
+
+  .exp__cert {
+    margin-top: 1rem;
+    padding-top: 0.7rem;
+    font-size: 0.75rem;
+  }
+
+  .exp__otc {
+    font-size: 0.6875rem;
+  }
+}

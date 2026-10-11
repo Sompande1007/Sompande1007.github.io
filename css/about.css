@@ -113,11 +113,11 @@
   display: none;
 }
 
-.has-dive .about__pose {
+.has-dive .about.has-frames .about__pose {
   display: none;
 }
 
-.has-dive .about__canvas {
+.has-dive .about.has-frames .about__canvas {
   position: relative;
   display: block;
   width: 100%;
