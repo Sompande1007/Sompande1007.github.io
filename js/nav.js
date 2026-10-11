@@ -28,12 +28,16 @@
     for (const s of sections) {
       if (s.getBoundingClientRect().top <= middle) active = s;
     }
-    if (active === current) return;
-    current = active;
-    setLabel(active.dataset.where);
-    const key = NAV_FOR[active.id] || null;
+    // A chapter reveal that fills the screen (e.g. Engineer's flood showing
+    // BUILDER) can name the chapter early via html[data-where-now].
+    const forced = document.documentElement.dataset.whereNow;
+    const key = forced || active.dataset.where;
+    if (key === current) return;
+    current = key;
+    setLabel(key);
+    const navKey = forced ? "work" : NAV_FOR[active.id] || null;
     for (const link of links) {
-      const on = link.dataset.nav === key;
+      const on = link.dataset.nav === navKey;
       link.classList.toggle("is-current", on);
       if (on) link.setAttribute("aria-current", "true");
       else link.removeAttribute("aria-current");
@@ -70,6 +74,7 @@
     { passive: true }
   );
   window.addEventListener("resize", update);
+  window.addEventListener("wherechange", update);
   update();
 
   /* ---------- Full-screen menu (touch screens) ---------- */

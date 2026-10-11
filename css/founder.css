@@ -1,0 +1,338 @@
+/* 03 Founder: what NuumX is, HRX (styled in chapters.css) and AI Employees.
+   The opener is Builder's "call ended" hand-off (css/builder.css); the
+   .f-opener header only shows without motion. Resting styles are the final,
+   visible state; js/founder.js adds the motion. */
+
+.has-motion .f-opener {
+  display: none;
+}
+
+/* ---------- What NuumX is ---------- */
+
+.nuumx {
+  padding: 8vh 0 12vh;
+}
+
+.has-motion .nuumx {
+  height: 220svh;
+  padding: 0;
+}
+
+.nuumx__stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 60svh;
+}
+
+.has-motion .nuumx__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+/* The buzzwords: an overlay (so it takes no space in the stage), each word
+   placed around the centre by --x / --y and sized by --s. They only exist
+   as motion; without it they stay hidden. */
+.nuumx__hype {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.nuumx__hype span {
+  position: absolute;
+  top: calc(50% + var(--py, var(--y)));
+  left: calc(50% + var(--px, var(--x)) * var(--spread, 1));
+  color: var(--muted);
+  font-family: var(--display);
+  font-size: calc(clamp(1.3rem, 2.6vw, 2.6rem) * var(--s));
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(var(--r));
+  will-change: transform, opacity, filter;
+}
+
+.nuumx__main {
+  position: relative;
+  max-width: min(980px, 92vw);
+  text-align: center;
+}
+
+.nuumx__label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  margin: 0 0 1.4rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.nuumx__label b {
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+  font-weight: 400;
+  line-height: 1;
+}
+
+.nuumx__line {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.4vw, 2.3rem);
+  font-weight: 500;
+  line-height: 1.3;
+  text-wrap: balance;
+}
+
+.nuumx__link {
+  margin-top: 2rem;
+}
+
+.nuumx__link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.nuumx__line em {
+  color: var(--accent);
+  font-style: normal;
+  font-weight: 700;
+}
+
+/* ---------- AI Employees ---------- */
+
+.aie {
+  padding: 8vh 0 14vh;
+}
+
+.has-motion .aie.is-pinned {
+  height: 260svh;
+  padding: 0;
+}
+
+.aie__stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 80px);
+}
+
+.has-motion .aie.is-pinned .aie__stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  padding-top: 64px; /* clear of the navbar */
+}
+
+.aie__title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(2.2rem, 3.6vw, 3.6rem);
+  font-weight: 400;
+  line-height: 0.95;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.aie__body {
+  max-width: 32em;
+  margin: 1.1rem 0 0;
+  color: var(--muted);
+  font-size: clamp(0.95rem, 1.1vw, 1.0625rem);
+  line-height: 1.55;
+}
+
+/* The org chart: a fixed-ratio box; nodes are placed by percentage. */
+.org {
+  position: relative;
+  max-width: 460px;
+  aspect-ratio: 400 / 230;
+  margin: 1.6rem 0 0;
+}
+
+.org__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.org__branch,
+.org__stem {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1.6;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.org__me,
+.org__cx {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-weight: 700;
+}
+
+.org__me {
+  top: 8%;
+  left: 50%;
+  padding: 0.5em 1em;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 0.8125rem;
+}
+
+.org__cx {
+  top: 46%;
+  left: var(--at);
+  padding: 0.45em 0.7em;
+  border: 1.5px solid var(--accent);
+  border-radius: 10px;
+  background: var(--bg);
+  font-size: 0.75rem;
+}
+
+.org__cx b {
+  color: var(--accent);
+}
+
+.org__team {
+  position: absolute;
+  top: 67%;
+  left: var(--at);
+  display: grid;
+  grid-template-columns: repeat(3, 12px);
+  gap: 4px;
+  transform: translateX(-50%);
+}
+
+.org__team i {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--accent) 55%, var(--bg));
+}
+
+.org__team small {
+  grid-column: 1 / -1;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.625rem;
+  text-align: center;
+}
+
+.org__count {
+  position: absolute;
+  left: 0;
+  bottom: -6%;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+.org__count b {
+  color: var(--ink);
+  font-family: var(--display);
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+/* The live page in a browser frame; JS scrolls the screenshot inside. */
+.aie__shot {
+  position: relative;
+}
+
+.aie__browser {
+  display: block;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.45);
+}
+
+.aie__bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  background: #ebe8e1;
+  color: #55514b;
+  font-size: 0.75rem;
+}
+
+.aie__bar i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #c9c4b9;
+}
+
+.aie__bar span {
+  margin-left: 10px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  background: #fff;
+}
+
+.aie__view {
+  display: block;
+  height: clamp(320px, 58svh, 560px);
+  overflow: hidden;
+}
+
+.aie__page {
+  display: block;
+  width: 100%;
+  height: auto;
+  will-change: transform;
+}
+
+.aie__live {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+}
+
+.aie__browser:focus-visible,
+.aie__live:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* ---------- Small screens ---------- */
+
+@media (max-width: 899px) {
+  /* Six of the ten, in clear bands above and below the sentence. */
+  .nuumx__hype span {
+    --spread: 1;
+  }
+
+  .nuumx__hype span:nth-child(5),
+  .nuumx__hype span:nth-child(7),
+  .nuumx__hype span:nth-child(9),
+  .nuumx__hype span:nth-child(10) {
+    display: none;
+  }
+
+  .nuumx__hype span:nth-child(1) { --px: -16%; --py: -36%; }
+  .nuumx__hype span:nth-child(2) { --px: 22%; --py: -27%; }
+  .nuumx__hype span:nth-child(6) { --px: -26%; --py: -23%; }
+  .nuumx__hype span:nth-child(3) { --px: -20%; --py: 31%; }
+  .nuumx__hype span:nth-child(4) { --px: 24%; --py: 37%; }
+  .nuumx__hype span:nth-child(8) { --px: -6%; --py: 44%; }
+
+  .aie__stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .aie__view {
+    height: 52svh;
+  }
+}

@@ -453,7 +453,11 @@
 
 /* ---------- Hand-off: "call ended" ---------- */
 
-/* Without motion: just the closing line, "03 Founder". */
+/* Without motion the hand-off isn't needed: Founder has its own opener. */
+.callend {
+  display: none;
+}
+
 .callend__stage {
   position: relative;
   display: grid;
@@ -477,15 +481,37 @@
   text-transform: uppercase;
 }
 
-.callend__next span {
-  margin-bottom: 0.5rem;
+.callend__num {
+  margin-bottom: clamp(0.9rem, 2.4vw, 2.2rem); /* clear of the outline */
   color: var(--accent);
   font-size: clamp(1.25rem, 2vw, 1.75rem);
   letter-spacing: 0.04em;
 }
 
+/* FOUNDER: an outline that fills up from the bottom (JS sets --fill). */
+.callend__word {
+  --fill: 100%;
+  color: transparent;
+  background-image: linear-gradient(to top, var(--ink) var(--fill), transparent var(--fill));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: clamp(1.5px, 0.18vw, 3px) var(--ink);
+}
+
+.callend__headline {
+  margin-top: 1.4rem;
+  font-size: clamp(1.6rem, 3.2vw, 3rem);
+  line-height: 1;
+}
+
+.callend__headline em {
+  color: var(--accent);
+  font-style: normal;
+}
+
 .has-motion .callend {
-  height: 300svh;
+  display: block;
+  height: 420svh;
   margin: 0 calc(var(--pad) * -1);
 }
 

@@ -10,7 +10,7 @@
 //  - Voice agents: one stream splits into ribbons sized to the real numbers;
 //    each label rides its ribbon's tip.
 //  - Hand-off: the page squeezes into the navbar island ("call ended"), which
-//    hangs up, and 03 Founder opens.
+//    hangs up, and 03 Founder opens: the word fills up inside its outline.
 // Scroll-linked parts play backwards too and replay on every pass. The player
 // works without Motion or with reduced motion; everything else then rests in
 // its final state.
@@ -24,6 +24,19 @@
   const lerp = (a, b, t) => a + (b - a) * t;
   const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
   const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+  // While a full-screen reveal shows the next chapter's name, the navbar
+  // shows it too (js/nav.js reads html[data-where-now]).
+  const whereNow = new Map();
+  function claimWhere(owner, label) {
+    if (label) whereNow.set(owner, label);
+    else whereNow.delete(owner);
+    const next = whereNow.size ? Array.from(whereNow.values()).pop() : "";
+    const root = document.documentElement;
+    if ((root.dataset.whereNow || "") === next) return;
+    if (next) root.dataset.whereNow = next;
+    else delete root.dataset.whereNow;
+    window.dispatchEvent(new Event("wherechange"));
+  }
   const fmt = (s) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 
   /* ================= VoiceAI ================= */
@@ -402,6 +415,7 @@
         // Tall and thin as bars, settling to the word's own height.
         word.style.transform = `scaleY(${lerp(1.18, 1, q).toFixed(3)})`;
         line.style.opacity = String(clamp01((p - 0.86) / 0.1));
+        claimWhere("builder", p > 0.62 && p < 1 ? "02 · Builder" : "");
       },
       { target: handoff, offset: ["start start", "end end"] }
     );
@@ -450,10 +464,19 @@
   const echo = callend.querySelector(".callend__echo");
   const pill = callend.querySelector(".callend__pill");
   const next = callend.querySelector(".callend__next");
+  const founderWord = callend.querySelector(".callend__word");
+  const headline = callend.querySelector(".callend__headline");
   const root = document.documentElement;
 
   M.scroll(
-    (p) => {
+    (whole) => {
+      // The first ~70% of the track is the hang-up; the rest opens Founder:
+      // FOUNDER fills up inside its outline, then the headline lands.
+      const p = clamp01(whole / 0.7);
+      const fill = easeInOut(clamp01((whole - 0.66) / 0.24));
+      founderWord.style.setProperty("--fill", `${(fill * 100).toFixed(1)}%`);
+      headline.style.opacity = String(clamp01((whole - 0.88) / 0.08));
+      claimWhere("founder", whole > 0.64 && whole < 1 ? "03 · Founder" : "");
       const W = stage.clientWidth;
       const H = stage.clientHeight;
       const pw = pill.offsetWidth || 190;
