@@ -99,6 +99,13 @@
     wanted = i;
     const f = nearestReady(i);
     if (f < 0 || (f === drawn && !force)) return;
+    // Until a frame is ready, the static avatar stands in (css/about.css).
+    // Swap to the canvas the first time there's something to draw.
+    if (!section.classList.contains("has-frames")) {
+      section.classList.add("has-frames");
+      sizeCanvas();
+      return;
+    }
     const h = Math.min(height, width / aspect);
     const w = h * aspect;
     ctx.clearRect(0, 0, width, height);
@@ -157,16 +164,18 @@
     return k;
   };
 
-  // Load the frames once the section is near, first frame first.
+  // Load the frames well before the section arrives: the first frame, then
+  // each line's resting pose, then everything else.
   let loading = false;
   function startLoading() {
     if (loading) return;
     loading = true;
     load(0).then(() => {
-      for (let i = 1; i < count; i++) load(i);
+      for (const r of restFrames) if (!frames[r]) load(r);
+      for (let i = 1; i < count; i++) if (!frames[i]) load(i);
     });
   }
-  M.inView(section, startLoading, { margin: "100% 0px 100% 0px" });
+  M.inView(section, startLoading, { margin: "300% 0px 300% 0px" });
   window.addEventListener("resize", sizeCanvas);
   sizeCanvas();
 

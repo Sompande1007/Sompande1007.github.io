@@ -5,7 +5,7 @@
 //  - VoiceAI: pinned. The page's lines flatten into one line, the line starts
 //    to speak, and the waveform (the clip's real one) becomes a player. While
 //    a clip plays, the spoken line lights up and the button breathes with the
-//    voice's loudness. The waveform is also the seek bar; script lines jump
+//    voice's loudness (from a precomputed envelope). The waveform is also the seek bar; script lines jump
 //    to where they're spoken; a button goes back ten seconds.
 //  - Voice agents: one stream splits into ribbons sized to the real numbers;
 //    each label rides its ribbon's tip.
@@ -228,26 +228,9 @@
     paint(t);
   }
 
-  // Loudness, for the breathing button.
-  let analyser = null;
-  let samples = null;
-  function listen() {
-    if (analyser) return;
-    try {
-      const Ctx = window.AudioContext || window.webkitAudioContext;
-      const ctx = new Ctx();
-      const source = ctx.createMediaElementSource(audio);
-      analyser = ctx.createAnalyser();
-      analyser.fftSize = 512;
-      samples = new Uint8Array(analyser.fftSize);
-      source.connect(analyser);
-      analyser.connect(ctx.destination);
-      listen.ctx = ctx;
-    } catch {
-      analyser = null;
-    }
-  }
-
+  // Loudness, for the breathing button: read from each clip's precomputed
+  // envelope (20 values a second, in clips.json) rather than routing the
+  // sound through Web Audio, so playback is always the plain audio element.
   let level = 0;
   function tick() {
     if (audio.paused) {
@@ -255,12 +238,10 @@
       playBtn.style.setProperty("--level", "0");
       return;
     }
-    if (analyser) {
-      analyser.getByteTimeDomainData(samples);
-      let sum = 0;
-      for (const v of samples) sum += ((v - 128) / 128) ** 2;
-      const rms = Math.sqrt(sum / samples.length);
-      level += (Math.min(1, rms * 4) - level) * 0.35;
+    const env = clip && clip.env;
+    if (env) {
+      const v = env[Math.min(env.length - 1, Math.floor(audio.currentTime * 20))] || 0;
+      level += (Math.min(1, v * 1.2) - level) * 0.35;
       playBtn.style.setProperty("--level", level.toFixed(3));
     }
     paint(audio.currentTime);
@@ -268,8 +249,6 @@
   }
 
   function play() {
-    listen();
-    if (listen.ctx && listen.ctx.state === "suspended") listen.ctx.resume();
     audio.play().catch(() => {});
   }
 
@@ -331,7 +310,7 @@
     for (const e of entries) if (!e.isIntersecting) audio.pause();
   }).observe(voice);
 
-  fetch("assets/builder/voice/clips.json")
+  fetch("assets/builder/voice/clips.json?v=2")
     .then((r) => r.json())
     .then((data) => {
       clips = data;
