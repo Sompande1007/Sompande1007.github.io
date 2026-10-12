@@ -46,7 +46,12 @@
       let html = el;
       while (html && !(html instanceof HTMLElement)) html = html.parentElement;
       let top = 0;
-      for (let e = html; e; e = e.offsetParent) top += e.offsetTop;
+      for (let e = html; e; e = e.offsetParent) {
+        top += e.offsetTop;
+        // A stage pinned with position: fixed (below) is measured from the
+        // screen; put it back on the page, where a sticky one would be.
+        if (e.dataset && e.dataset.pin === "on") top += window.scrollY;
+      }
       b = { top, height: html ? html.offsetHeight : 0 };
       boxes.set(el, b);
     }
@@ -67,6 +72,7 @@
       if (h !== pageH) {
         pageH = h;
         forget();
+        window.dispatchEvent(new Event("pagechange"));
       }
     }).observe(document.body);
   };
@@ -169,6 +175,101 @@
   };
   window.addEventListener("layoutresize", () => requestAnimationFrame(refresh));
   window.addEventListener("load", () => requestAnimationFrame(refresh));
+
+  /* ---------- Pinned stages on touch screens ----------
+
+     Every pinned scene is a position: sticky stage. On phones (iOS Safari
+     especially) a stuck sticky element shakes by a pixel or two while the
+     page scrolls: the browser re-places it from a slightly stale scroll
+     position whenever the scene inside it redraws. Fixed elements don't
+     (the navbar island never shakes). So on touch screens, while a stage is
+     stuck, it's switched to position: fixed at the same spot, and back to
+     sticky at either end of its section, where sticky parks it. The stage
+     is its section's only in-flow child and the section's height is set by
+     CSS, so nothing else on the page moves. */
+  const STAGES =
+    ".hero__stage, .about__stage, .automation__panel, .teach__stage, .handoff__stage, " +
+    ".voice__stage, .callend__stage, .nuumx__stage, .aie__stage, .exp__stage, .ct__stage";
+  let pins = [];
+
+  function release(p) {
+    const s = p.el.style;
+    s.position = s.top = s.left = s.width = "";
+    delete p.el.dataset.pin;
+    p.on = false;
+  }
+
+  function measurePins() {
+    pins.forEach(release);
+    pins = [];
+    for (const el of document.querySelectorAll(STAGES)) {
+      const cs = getComputedStyle(el);
+      if (cs.position !== "sticky") continue;
+      const parent = el.parentElement;
+      const pcs = getComputedStyle(parent);
+      // Where the stage sits on the page when not stuck.
+      el.style.position = "relative";
+      let top = 0;
+      for (let e = el; e; e = e.offsetParent) top += e.offsetTop;
+      let parentTop = 0;
+      for (let e = parent; e; e = e.offsetParent) parentTop += e.offsetTop;
+      const r = el.getBoundingClientRect();
+      el.style.position = "";
+      const stick = parseFloat(cs.top) || 0;
+      const floor = parentTop + parent.offsetHeight - parseFloat(pcs.paddingBottom) - parseFloat(pcs.borderBottomWidth);
+      const p = {
+        el,
+        on: false,
+        stick,
+        left: r.left,
+        width: r.width,
+        start: top - stick, // stuck from this scroll position…
+        end: floor - r.height - stick, // …until this one
+      };
+      if (p.end > p.start) pins.push(p);
+    }
+    updatePins();
+  }
+
+  function updatePins() {
+    const y = window.scrollY;
+    for (let i = 0; i < pins.length; i++) {
+      const p = pins[i];
+      const on = y > p.start && y < p.end;
+      if (on === p.on) continue;
+      if (!on) {
+        release(p);
+        continue;
+      }
+      const s = p.el.style;
+      s.position = "fixed";
+      s.top = `${p.stick}px`;
+      s.left = `${p.left}px`;
+      s.width = `${p.width}px`;
+      p.el.dataset.pin = "on";
+      p.on = true;
+    }
+  }
+
+  if (coarse) {
+    // Straight from the scroll event, so the switch lands in the same frame.
+    window.addEventListener("scroll", updatePins, { passive: true });
+    // Re-measure once the other scripts have laid their scenes out (they
+    // decide which sections pin), and whenever the page changes size.
+    let measureQueued = false;
+    const remeasure = () => {
+      if (measureQueued) return;
+      measureQueued = true;
+      requestAnimationFrame(() => {
+        measureQueued = false;
+        measurePins();
+      });
+    };
+    window.addEventListener("layoutresize", remeasure);
+    window.addEventListener("load", remeasure);
+    if (document.fonts) document.fonts.ready.then(remeasure);
+    window.addEventListener("pagechange", remeasure);
+  }
 
   window.track = (subject, opts = {}) => {
     const offset = opts.offset || ["start end", "end start"];
