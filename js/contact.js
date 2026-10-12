@@ -160,7 +160,7 @@
     root.classList.toggle("is-contacting", p > 0 && s < 0.98);
   }
 
-  M.scroll(render, { target: section, offset: ["start start", "end end"] });
+  window.track(render, { target: section, offset: ["start start", "end end"] });
   window.addEventListener("layoutresize", layout);
   // The card changes height (sent / errors): keep the shape matched to it.
   let resizing = false;

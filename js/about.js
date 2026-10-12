@@ -16,7 +16,7 @@
   const section = document.querySelector("#about");
   if (!M || !section || !document.documentElement.classList.contains("has-dive")) return;
 
-  const { scroll } = M;
+  const scroll = window.track; // cached-position scroll tracking (js/viewport.js)
   const clamp01 = (v) => Math.min(1, Math.max(0, v));
   const easeInOut = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
   const easeIn = (t) => t * t * t;
@@ -33,7 +33,7 @@
   scroll(() => {
     // Live once the section's top reaches the top of the screen: that is the
     // exact frame the dive ends on.
-    const now = section.getBoundingClientRect().top <= 0.5;
+    const now = window.viewTop(section) <= 0.5;
     if (now === live) return;
     live = now;
     section.classList.toggle("is-live", live);

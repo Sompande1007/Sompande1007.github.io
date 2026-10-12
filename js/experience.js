@@ -221,7 +221,7 @@
     const PER_STOP = 70; // svh of scroll per stop
     section.style.setProperty("--exp-height", `${N * PER_STOP + 30}svh`);
     const stopAt = (p) => Math.max(0, Math.min(N - 1, Math.floor(p * N)));
-    M.scroll((p) => {
+    window.track((p) => {
       const k = stopAt(p);
       if (k !== index || (!turning && lastPos !== k)) goTo(k);
     }, { target: section, offset: ["start start", "end end"] });
@@ -314,7 +314,7 @@
     else passingUntil = performance.now() + 2500;
   });
   function watch() {
-    const top = section.getBoundingClientRect().top;
+    const top = window.viewTop(section);
     if (!locked && !releasing && performance.now() > passingUntil) {
       if (prevTop > 1 && top <= 1) lock(0);
       else if (prevTop < -1 && top >= -1) lock(fromStart ? 0 : N - 1);

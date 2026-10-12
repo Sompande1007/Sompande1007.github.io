@@ -100,29 +100,32 @@
 
   // Pin only on wide screens where the whole panel fits.
   let pinned = false;
+  let panelH = 0;
+  let pinTop = 0;
   function layout() {
     const fits = window.innerWidth >= 900 && panel.offsetHeight < window.stableVH() - 120;
     pinned = fits;
     article.classList.toggle("is-pinned", fits);
     article.style.setProperty("--panel-h", `${panel.offsetHeight}px`);
+    // Measured here, once, rather than on every scroll frame.
+    panelH = panel.offsetHeight;
+    pinTop = parseFloat(getComputedStyle(panel).top) || 0;
+    window.forgetLayout();
   }
 
   function progress() {
     const vh = window.stableVH();
     if (pinned) {
       // From the moment the panel pins until the pin lets go.
-      const pinTop = parseFloat(getComputedStyle(panel).top) || 0;
-      const a = article.getBoundingClientRect();
-      const travel = a.height - panel.offsetHeight;
+      const travel = window.boxHeight(article) - panelH;
       // Finishes a little before the pin ends, so the clean graph holds.
-      return clamp01((pinTop - a.top) / Math.max(1, travel) / 0.85);
+      return clamp01((pinTop - window.viewTop(article)) / Math.max(1, travel) / 0.85);
     }
     // While the graph rises from low on the screen to above the middle.
-    const r = svg.getBoundingClientRect();
-    return clamp01((vh * 0.85 - r.top) / (vh * 0.5));
+    return clamp01((vh * 0.85 - window.viewTop(svg)) / (vh * 0.5));
   }
 
   layout();
   window.addEventListener("layoutresize", layout);
-  M.scroll(() => draw(progress()));
+  window.track(() => draw(progress()));
 })();

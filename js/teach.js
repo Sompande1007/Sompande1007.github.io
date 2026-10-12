@@ -175,7 +175,7 @@
     stats.path.classList.toggle("is-dim", w < 1);
   }
 
-  M.scroll(render, { target: section, offset: ["start start", "end end"] });
+  window.track(render, { target: section, offset: ["start start", "end end"] });
   window.addEventListener("layoutresize", measure);
   measure();
   if (document.fonts) document.fonts.ready.then(measure);

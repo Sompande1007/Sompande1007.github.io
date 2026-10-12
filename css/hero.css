@@ -436,3 +436,24 @@ a {
     transition: none;
   }
 }
+
+/* ---------- Steady scrolling on phones ----------
+   Pinned stages get their own compositing layer, so redrawing what's inside
+   them doesn't disturb the page around them; and scroll anchoring is off
+   (nothing here needs it, and it can nudge the page mid-scroll). */
+html {
+  overflow-anchor: none;
+}
+
+.has-dive .about__stage,
+.has-motion .teach.is-pinned .teach__stage,
+.has-motion .voice.is-pinned .voice__stage,
+.has-motion .callend__stage,
+.has-motion .nuumx__stage,
+.has-motion .aie.is-pinned .aie__stage,
+.has-motion .exp__stage,
+.has-motion .contact.is-pinned .ct__stage,
+.has-motion .handoff__stage {
+  will-change: transform;
+}
+

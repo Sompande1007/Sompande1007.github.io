@@ -26,7 +26,7 @@
     const middle = window.stableVH() / 2;
     let active = sections[0];
     for (const s of sections) {
-      if (s.getBoundingClientRect().top <= middle) active = s;
+      if (window.viewTop(s) <= middle) active = s;
     }
     // A chapter reveal that fills the screen (e.g. Engineer's flood showing
     // BUILDER) can name the chapter early via html[data-where-now].

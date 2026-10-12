@@ -114,7 +114,10 @@
   if (!M || reduceMotion || !opener) return;
   document.documentElement.classList.add("has-motion");
 
-  const { animate, scroll, inView, stagger } = M;
+  const { animate, inView, stagger } = M;
+  // Scroll-linked progress from cached positions (js/viewport.js), not
+  // Motion's scroll(), which re-measures the page on every frame.
+  const scroll = window.track;
   const springy = (bounce, visualDuration) => ({ type: "spring", bounce, visualDuration });
 
   // Plays when `el` comes into view (by `amount`), and resets only once it is
@@ -319,7 +322,8 @@
         },
         { ease: "linear" }
       ),
-      { target: panel, offset: ["start end", "start 0.3"] }
+      // Tracked by its section: the panel itself pins (sticky) on wide screens.
+      { target: panel.closest(".automation"), offset: ["start end", "start 0.3"] }
     );
 
     // Numbers spin like a slot machine; the dividers draw; the 0 pulses.

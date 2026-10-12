@@ -40,7 +40,7 @@
   measureHype();
   window.addEventListener("layoutresize", measureHype);
 
-  M.scroll(
+  window.track(
     (p) => {
       for (let i = 0; i < words.length; i++) {
         // The hype arrives with the stage, then each word drifts off in turn.
@@ -71,6 +71,7 @@
   const to = aie.querySelector(".org__to");
   const now = aie.querySelector(".org__now");
   const view = aie.querySelector(".aie__view");
+  const org = aie.querySelector(".org");
   const page = aie.querySelector(".aie__page");
 
   function grow(t) {
@@ -99,8 +100,14 @@
   }
 
   // The live page scrolls itself inside the browser frame.
+  // Measured on layout, not per frame (see js/viewport.js).
+  let travel = 0;
+  const measureTravel = () => {
+    travel = page.offsetHeight - view.clientHeight;
+  };
+  page.addEventListener("load", measureTravel);
+  if (page.complete) measureTravel();
   function scrollPage(t) {
-    const travel = page.offsetHeight - view.clientHeight;
     page.style.transform = `translateY(${(-Math.max(0, travel) * easeInOut(t)).toFixed(1)}px)`;
   }
 
@@ -110,25 +117,23 @@
     aie.classList.remove("is-pinned");
     pinned = window.innerWidth >= 900 && stage.scrollHeight < window.stableVH() - 20;
     aie.classList.toggle("is-pinned", pinned);
+    measureTravel();
   }
   layout();
   window.addEventListener("layoutresize", layout);
 
-  M.scroll(() => {
+  window.track(() => {
     const vh = window.stableVH();
     let t;
     if (pinned) {
-      const r = aie.getBoundingClientRect();
-      t = clamp01(-r.top / Math.max(1, r.height - vh) / 0.85);
+      t = clamp01(-window.viewTop(aie) / Math.max(1, window.boxHeight(aie) - vh) / 0.85);
       grow(t);
       scrollPage(t);
     } else {
       // Stacked (phones): the chart grows as it rises; the page scrolls as
       // its frame passes through the screen.
-      const o = aie.querySelector(".org").getBoundingClientRect();
-      grow(clamp01((vh * 0.9 - o.top) / (vh * 0.6)));
-      const b = view.getBoundingClientRect();
-      scrollPage(clamp01((vh - b.top) / (vh + b.height)));
+      grow(clamp01((vh * 0.9 - window.viewTop(org)) / (vh * 0.6)));
+      scrollPage(clamp01((vh - window.viewTop(view)) / (vh + window.boxHeight(view))));
     }
   });
 })();

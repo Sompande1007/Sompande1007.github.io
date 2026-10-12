@@ -311,10 +311,9 @@
 
   function progress() {
     if (reduceMotion) return 1;
-    const rect = section.getBoundingClientRect();
-    const span = rect.height - window.stableVH();
+    const span = window.boxHeight(section) - window.stableVH();
     if (span <= 0) return 0;
-    return clamp01(-rect.top / span);
+    return clamp01(-window.viewTop(section) / span);
   }
 
   function tick(now) {

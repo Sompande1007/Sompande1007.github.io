@@ -383,7 +383,7 @@
     const line = handoff.querySelector(".handoff__tagline");
     const PERIOD = 16; // px between bars
 
-    M.scroll(
+    window.track(
       (p) => {
         // The flood reveals the word from p ≈ 0.62 (js/chapters.js).
         const q = easeInOut(clamp01((p - 0.62) / 0.28));
@@ -394,7 +394,10 @@
         // Tall and thin as bars, settling to the word's own height.
         word.style.transform = `scaleY(${lerp(1.18, 1, q).toFixed(3)})`;
         line.style.opacity = String(clamp01((p - 0.86) / 0.1));
-        claimWhere("builder", p > 0.62 && p < 1 ? "02 · Builder" : "");
+        // Hold the label from the reveal until the next chapter takes over
+        // (while the hand-off still covers the middle of the screen).
+        const covering = window.viewTop(handoff) + window.boxHeight(handoff) > window.stableVH() * 0.5;
+        claimWhere("builder", p > 0.62 && covering ? "02 · Builder" : "");
       },
       { target: handoff, offset: ["start start", "end end"] }
     );
@@ -412,19 +415,17 @@
   pinVoice();
   window.addEventListener("layoutresize", pinVoice);
 
-  M.scroll(() => {
+  window.track(() => {
     let t;
     if (pinned) {
-      const r = voice.getBoundingClientRect();
-      const travel = r.height - window.stableVH();
-      t = clamp01(-r.top / Math.max(1, travel) / 0.8);
+      const travel = window.boxHeight(voice) - window.stableVH();
+      t = clamp01(-window.viewTop(voice) / Math.max(1, travel) / 0.8);
     } else {
       // Phones: finish while the card is still coming up the screen (its
       // top between 95% and 65% of the way down), so the player is ready
       // as soon as it's in view (e.g. when the clip chips above it are).
-      const r = card.getBoundingClientRect();
       const vh = window.stableVH();
-      t = clamp01((vh * 0.95 - r.top) / (vh * 0.3));
+      t = clamp01((vh * 0.95 - window.viewTop(card)) / (vh * 0.3));
     }
     if (t === morph) return;
     morph = t;
@@ -434,9 +435,8 @@
   /* ---------- Voice agents: scroll-linked split ---------- */
 
   drawSplit(0);
-  M.scroll(() => {
-    const r = fig.getBoundingClientRect();
-    drawSplit(clamp01((window.stableVH() * 0.9 - r.top) / (window.stableVH() * 0.6)));
+  window.track(() => {
+    drawSplit(clamp01((window.stableVH() * 0.9 - window.viewTop(fig)) / (window.stableVH() * 0.6)));
   });
 
   /* ---------- Hand-off: call ended ---------- */
@@ -451,7 +451,7 @@
   const headline = callend.querySelector(".callend__headline");
   const root = document.documentElement;
 
-  M.scroll(
+  window.track(
     (whole) => {
       // The first ~70% of the track is the hang-up; the rest opens Founder:
       // FOUNDER fills up inside its outline, then the headline lands.
@@ -459,7 +459,8 @@
       const fill = easeInOut(clamp01((whole - 0.66) / 0.24));
       founderWord.style.setProperty("--fill", `${(fill * 100).toFixed(1)}%`);
       headline.style.opacity = String(clamp01((whole - 0.88) / 0.08));
-      claimWhere("founder", whole > 0.64 && whole < 1 ? "03 · Founder" : "");
+      const covering = window.viewTop(callend) + window.boxHeight(callend) > window.stableVH() * 0.5;
+      claimWhere("founder", whole > 0.64 && covering ? "03 · Founder" : "");
       const W = stage.clientWidth;
       const H = stage.clientHeight;
       const pw = pill.offsetWidth || 190;
