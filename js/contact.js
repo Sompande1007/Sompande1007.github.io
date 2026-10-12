@@ -104,7 +104,7 @@
   let to = { x: 0, y: 0, w: 0, h: 0 }; // the card
   function layout() {
     section.classList.add("is-pinned");
-    const fits = card.offsetHeight + head.offsetHeight + 200 < window.innerHeight;
+    const fits = card.offsetHeight + head.offsetHeight + 200 < window.stableVH();
     pinned = fits;
     section.classList.toggle("is-pinned", fits);
     if (!pinned) {
@@ -161,7 +161,7 @@
   }
 
   M.scroll(render, { target: section, offset: ["start start", "end end"] });
-  window.addEventListener("resize", layout);
+  window.addEventListener("layoutresize", layout);
   // The card changes height (sent / errors): keep the shape matched to it.
   let resizing = false;
   new ResizeObserver(() => {

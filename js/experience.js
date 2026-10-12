@@ -211,6 +211,34 @@
     });
   }
 
+  /* ---------- Touch screens: scroll-stepped, never locked ---------- */
+
+  // Locking the page fights a phone's momentum scrolling (the screen
+  // shakes), so on touch screens the section gets a stretch of scroll per
+  // stop instead: crossing into a stop's stretch turns the dial to it, with
+  // the same fixed-length animation. The page itself is never moved.
+  if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
+    const PER_STOP = 70; // svh of scroll per stop
+    section.style.setProperty("--exp-height", `${N * PER_STOP + 30}svh`);
+    const stopAt = (p) => Math.max(0, Math.min(N - 1, Math.floor(p * N)));
+    M.scroll((p) => {
+      const k = stopAt(p);
+      if (k !== index || (!turning && lastPos !== k)) goTo(k);
+    }, { target: section, offset: ["start start", "end end"] });
+    const scrollToStop = (k) => {
+      const to = Math.max(0, Math.min(N - 1, k));
+      const top = section.getBoundingClientRect().top + window.scrollY;
+      const y = top + ((to + 0.5) / N) * (section.offsetHeight - window.stableVH());
+      window.scrollTo({ top: y, behavior: "smooth" });
+    };
+    prevBtn.addEventListener("click", () => scrollToStop(current - 1));
+    nextBtn.addEventListener("click", () => scrollToStop(current + 1));
+    window.addEventListener("layoutresize", build);
+    build();
+    if (document.fonts) document.fonts.ready.then(build);
+    return;
+  }
+
   /* ---------- Locking the page while the dial is in charge ---------- */
 
   const lenis = () => window.lenis;
@@ -242,7 +270,7 @@
   function release(dir) {
     locked = false;
     releasing = true;
-    const y = dir > 0 ? sectionTop() + section.offsetHeight : sectionTop() - window.innerHeight * 0.6;
+    const y = dir > 0 ? sectionTop() + section.offsetHeight : sectionTop() - window.stableVH() * 0.6;
     let finished = false;
     const done = () => {
       if (finished) return;
@@ -347,7 +375,7 @@
   prevBtn.addEventListener("click", () => (locked ? step(-1) : (lock(current), goTo(current - 1))));
   nextBtn.addEventListener("click", () => (locked ? step(1) : (lock(current), goTo(current + 1))));
 
-  window.addEventListener("resize", build);
+  window.addEventListener("layoutresize", build);
   build();
   if (document.fonts) document.fonts.ready.then(build);
 })();

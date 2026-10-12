@@ -318,7 +318,7 @@
     })
     .catch(() => {});
 
-  window.addEventListener("resize", layoutWave);
+  window.addEventListener("layoutresize", layoutWave);
   layoutWave();
 
   /* ================= Voice agents: the split ================= */
@@ -405,22 +405,26 @@
   let pinned = false;
   function pinVoice() {
     voice.classList.remove("is-pinned");
-    const fits = window.innerWidth >= 900 && voice.querySelector(".voice__stage").scrollHeight < window.innerHeight - 40;
+    const fits = window.innerWidth >= 900 && voice.querySelector(".voice__stage").scrollHeight < window.stableVH() - 40;
     pinned = fits;
     voice.classList.toggle("is-pinned", fits);
   }
   pinVoice();
-  window.addEventListener("resize", pinVoice);
+  window.addEventListener("layoutresize", pinVoice);
 
   M.scroll(() => {
     let t;
     if (pinned) {
       const r = voice.getBoundingClientRect();
-      const travel = r.height - window.innerHeight;
+      const travel = r.height - window.stableVH();
       t = clamp01(-r.top / Math.max(1, travel) / 0.8);
     } else {
+      // Phones: finish while the card is still coming up the screen (its
+      // top between 95% and 65% of the way down), so the player is ready
+      // as soon as it's in view (e.g. when the clip chips above it are).
       const r = card.getBoundingClientRect();
-      t = clamp01((window.innerHeight * 0.9 - r.top) / (window.innerHeight * 0.6));
+      const vh = window.stableVH();
+      t = clamp01((vh * 0.95 - r.top) / (vh * 0.3));
     }
     if (t === morph) return;
     morph = t;
@@ -432,7 +436,7 @@
   drawSplit(0);
   M.scroll(() => {
     const r = fig.getBoundingClientRect();
-    drawSplit(clamp01((window.innerHeight * 0.9 - r.top) / (window.innerHeight * 0.6)));
+    drawSplit(clamp01((window.stableVH() * 0.9 - r.top) / (window.stableVH() * 0.6)));
   });
 
   /* ---------- Hand-off: call ended ---------- */

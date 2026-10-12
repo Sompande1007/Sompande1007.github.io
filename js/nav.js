@@ -23,7 +23,7 @@
   let current = null;
   function update() {
     // The last section whose top has passed the middle of the screen.
-    const middle = window.innerHeight / 2;
+    const middle = window.stableVH() / 2;
     let active = sections[0];
     for (const s of sections) {
       if (s.getBoundingClientRect().top <= middle) active = s;
@@ -73,7 +73,7 @@
     },
     { passive: true }
   );
-  window.addEventListener("resize", update);
+  window.addEventListener("layoutresize", update);
   window.addEventListener("wherechange", update);
   update();
 

@@ -225,7 +225,7 @@
     share = (heroScroll - 100) / (heroScroll + diveScroll - 100);
     // Tell the navbar where the dive begins (it turns solid there).
     const top = section.getBoundingClientRect().top + window.scrollY;
-    window.heroSolidAt = top + share * (section.offsetHeight - window.innerHeight);
+    window.heroSolidAt = top + share * (section.offsetHeight - window.stableVH());
   }
 
   function render(q) {
@@ -278,7 +278,10 @@
     echoEl.style.opacity = fade;
 
     // Nav steps aside from the moment the glass starts taking over.
-    document.documentElement.classList.toggle("is-diving", d > 0.45 && d < 1);
+    // "Diving" hides the navbar. Count the dive as finished just short of 1:
+    // landing exactly on About (a nav link) can leave d at 0.9999…, which
+    // would keep the navbar hidden and untappable.
+    document.documentElement.classList.toggle("is-diving", d > 0.45 && d < 0.995);
 
     if (d <= 0) {
       canvas.style.transform = "";
@@ -309,7 +312,7 @@
   function progress() {
     if (reduceMotion) return 1;
     const rect = section.getBoundingClientRect();
-    const span = rect.height - window.innerHeight;
+    const span = rect.height - window.stableVH();
     if (span <= 0) return 0;
     return clamp01(-rect.top / span);
   }
@@ -344,7 +347,7 @@
 
   /* ---------- Start ---------- */
 
-  window.addEventListener("resize", layout);
+  window.addEventListener("layoutresize", layout);
 
   // Frame count and aspect live on the canvas, so the page needs no fetch and
   // also works when index.html is opened straight from disk.

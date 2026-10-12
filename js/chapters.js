@@ -572,7 +572,7 @@
       cover = (far * 2.1) / 40;
     }
     measure();
-    window.addEventListener("resize", measure);
+    window.addEventListener("layoutresize", measure);
 
     const clamp = (v) => Math.min(1, Math.max(0, v));
     const easeIn = (t) => t * t * t;

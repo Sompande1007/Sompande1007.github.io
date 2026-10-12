@@ -176,7 +176,7 @@
     });
   }
   M.inView(section, startLoading, { margin: "300% 0px 300% 0px" });
-  window.addEventListener("resize", sizeCanvas);
+  window.addEventListener("layoutresize", sizeCanvas);
   sizeCanvas();
 
   /* ---------- Finale: blocks fall and stack, scroll-linked ---------- */
@@ -230,7 +230,7 @@
   }
 
   measureDrop();
-  window.addEventListener("resize", measureDrop);
+  window.addEventListener("layoutresize", measureDrop);
 
   /* ---------- One scroll track drives the lines, avatar and blocks ---------- */
 

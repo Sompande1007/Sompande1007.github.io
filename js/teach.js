@@ -176,7 +176,7 @@
   }
 
   M.scroll(render, { target: section, offset: ["start start", "end end"] });
-  window.addEventListener("resize", measure);
+  window.addEventListener("layoutresize", measure);
   measure();
   if (document.fonts) document.fonts.ready.then(measure);
 })();

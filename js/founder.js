@@ -38,7 +38,7 @@
     });
   }
   measureHype();
-  window.addEventListener("resize", measureHype);
+  window.addEventListener("layoutresize", measureHype);
 
   M.scroll(
     (p) => {
@@ -108,14 +108,14 @@
   let pinned = false;
   function layout() {
     aie.classList.remove("is-pinned");
-    pinned = window.innerWidth >= 900 && stage.scrollHeight < window.innerHeight - 20;
+    pinned = window.innerWidth >= 900 && stage.scrollHeight < window.stableVH() - 20;
     aie.classList.toggle("is-pinned", pinned);
   }
   layout();
-  window.addEventListener("resize", layout);
+  window.addEventListener("layoutresize", layout);
 
   M.scroll(() => {
-    const vh = window.innerHeight;
+    const vh = window.stableVH();
     let t;
     if (pinned) {
       const r = aie.getBoundingClientRect();

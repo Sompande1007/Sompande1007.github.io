@@ -101,14 +101,14 @@
   // Pin only on wide screens where the whole panel fits.
   let pinned = false;
   function layout() {
-    const fits = window.innerWidth >= 900 && panel.offsetHeight < window.innerHeight - 120;
+    const fits = window.innerWidth >= 900 && panel.offsetHeight < window.stableVH() - 120;
     pinned = fits;
     article.classList.toggle("is-pinned", fits);
     article.style.setProperty("--panel-h", `${panel.offsetHeight}px`);
   }
 
   function progress() {
-    const vh = window.innerHeight;
+    const vh = window.stableVH();
     if (pinned) {
       // From the moment the panel pins until the pin lets go.
       const pinTop = parseFloat(getComputedStyle(panel).top) || 0;
@@ -123,6 +123,6 @@
   }
 
   layout();
-  window.addEventListener("resize", layout);
+  window.addEventListener("layoutresize", layout);
   M.scroll(() => draw(progress()));
 })();
