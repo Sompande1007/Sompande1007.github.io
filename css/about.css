@@ -252,3 +252,12 @@
   }
 
 }
+
+/* Short phones (iPhone SE): the longest lines would reach up into the tag,
+   so they sit a little lower. The greeting keeps its own --greet-y, where
+   the lens dive leaves it. */
+@media (max-width: 759px) and (max-height: 620px) {
+  .has-dive .about__beat {
+    top: var(--greet-y, 36%);
+  }
+}

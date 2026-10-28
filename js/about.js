@@ -232,21 +232,39 @@
   measureDrop();
   window.addEventListener("layoutresize", measureDrop);
 
+  // How much each line may grow as it leaves without running off the right
+  // edge of the stage (lines scale from their left edge). Wide screens keep
+  // the full zoom; on phones, where a line already spans the screen, it
+  // barely grows. Layout widths ignore transforms, so this is safe mid-play.
+  const GROW = 0.55;
+  let grow = beats.map(() => GROW);
+  function measureGrow() {
+    const room = stage.clientWidth;
+    grow = beats.map((b) => {
+      const w = b.offsetWidth;
+      if (!w) return GROW;
+      return Math.max(0.03, Math.min(GROW, (room - b.offsetLeft) / w - 1));
+    });
+  }
+  measureGrow();
+  window.addEventListener("layoutresize", measureGrow);
+  if (document.fonts) document.fonts.ready.then(measureGrow);
+
   /* ---------- One scroll track drives the lines, avatar and blocks ---------- */
 
   scroll(
     (p) => {
       for (let i = 0; i < N - 1; i++) {
-        // The outgoing line uses the first 60% of a change, the incoming line
-        // the last 60%, so they barely overlap.
-        const tIn = i === 0 ? 1 : clamp01((change(p, i) - 0.4) / 0.6);
-        const tOut = clamp01(change(p, i + 1) / 0.6);
+        // The outgoing line uses the first 45% of a change and the incoming
+        // line the last 45%, so the two are never on screen together.
+        const tIn = i === 0 ? 1 : clamp01((change(p, i) - 0.55) / 0.45);
+        const tOut = clamp01(change(p, i + 1) / 0.45);
         let opacity;
         let scale;
         if (tOut > 0) {
           // Leaving: grows and fades as if the camera passes through it.
           opacity = 1 - tOut;
-          scale = 1 + 0.55 * tOut;
+          scale = 1 + grow[i] * tOut;
         } else {
           // Arriving: grows in from smaller.
           opacity = tIn;

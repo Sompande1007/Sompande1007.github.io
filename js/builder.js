@@ -504,17 +504,24 @@
     const advWords = Array.from(adv.querySelectorAll(".adv__title span"));
     const level = adv.querySelector(".adv__level");
     const values = Array.from(adv.querySelectorAll(".adv__spec dd"));
-    const LEAN_Y = [10, -12, 7, -9, 12, -6, 9, -11];
-    const LEAN_R = [-3, 2.5, -2, 3.5, -2.5, 3, -3.5, 2];
+    // Lean per word, as a share of the type size, small enough that a word
+    // never reaches into the line above or below it.
+    const LEAN_Y = [0.07, -0.08, 0.05, -0.06, 0.08, -0.04, 0.06, -0.07];
+    const LEAN_R = [-1.8, 1.5, -1.2, 2, -1.5, 1.8, -2, 1.2];
+    const title = adv.querySelector(".adv__title");
+    let em = 40;
+    const measureEm = () => (em = parseFloat(getComputedStyle(title).fontSize) || 40);
+    measureEm();
+    window.addEventListener("layoutresize", measureEm);
     window.track(
       (p) => {
         const k = 1 - easeOut(clamp01(p / 0.9));
         const shown = (0.3 + 0.7 * clamp01(p / 0.4)).toFixed(3);
         advWords.forEach((w, i) => {
-          w.style.transform = `translateY(${(LEAN_Y[i % 8] * k).toFixed(1)}px) rotate(${(LEAN_R[i % 8] * k).toFixed(2)}deg)`;
+          w.style.transform = `translateY(${(LEAN_Y[i % 8] * em * k).toFixed(1)}px) rotate(${(LEAN_R[i % 8] * k).toFixed(2)}deg)`;
           w.style.opacity = shown;
         });
-        level.style.transform = `rotate(${(-4 * k).toFixed(2)}deg)`;
+        level.style.transform = `rotate(${(-3 * k).toFixed(2)}deg)`;
         values.forEach((v, i) => {
           const t = easeOut(clamp01((p - 0.35 - i * 0.12) / 0.35));
           v.style.opacity = (0.12 + 0.88 * t).toFixed(3);
