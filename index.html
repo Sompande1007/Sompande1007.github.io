@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Som Pande</title>
+  <meta name="theme-color" content="#f7f5f0">
+  <script src="js/theme.js?v=2"></script>
+  <script src="js/viewport.js?v=7"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.css">
+  <link rel="stylesheet" href="css/hero.css?v=20">
+  <link rel="stylesheet" href="css/chapters.css?v=23">
+  <link rel="stylesheet" href="css/builder.css?v=13">
+  <link rel="stylesheet" href="css/experience.css?v=5">
+  <link rel="stylesheet" href="css/contact.css?v=3">
+  <link rel="stylesheet" href="css/about.css?v=9">
+  <link rel="stylesheet" href="css/nav.css?v=2">
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- Navbar: a small solid "island" at top centre showing the current
+       section. On hover/focus (desktop) it expands into the full menu; on
+       touch screens its menu button opens a full-screen menu. -->
+  <header class="island" data-nav-bar>
+    <nav class="island__bar" aria-label="Main">
+      <a class="island__face" href="#top" aria-label="Som Pande, back to top"><img src="assets/nav/face.webp" alt="" width="256" height="256"></a>
+      <span class="island__where" aria-hidden="true"><i class="island__dot"></i><span data-where>Som Pande</span></span>
+      <div class="island__links">
+        <div class="island__links-inner">
+          <a class="island__logo" href="#top">SOM PANDE</a>
+          <a class="island__link" href="#about" data-nav="about">About</a>
+          <a class="island__link" href="#engineer" data-nav="work">Work</a>
+          <a class="island__link" href="#experience" data-nav="experience">Experience</a>
+          <a class="island__link" href="#contact" data-nav="contact">Contact</a>
+          <span class="island__sep" aria-hidden="true"></span>
+          <button class="theme-toggle" type="button" aria-label="Switch to dark theme">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          </button>
+          <a class="island__resume" href="assets/Som-Pande-Resume.pdf" target="_blank" rel="noopener">Resume <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+      <button class="island__menu-btn" type="button" aria-expanded="false" aria-controls="menu" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 8h14M5 16h14"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Full-screen menu for touch screens. -->
+  <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+    <button class="menu__close" type="button" aria-label="Close menu">
+      <img src="assets/nav/face.webp" alt="" width="256" height="256"><span>Close</span><span aria-hidden="true">✕</span>
+    </button>
+    <ol class="menu__links">
+      <li><a href="#about" data-nav="about"><small>00</small><span>About</span></a></li>
+      <li><a href="#engineer" data-nav="work"><small>01</small><span>Work</span></a></li>
+      <li><a href="#experience" data-nav="experience"><small>02</small><span>Experience</span></a></li>
+      <li><a href="#contact" data-nav="contact"><small>03</small><span>Contact</span></a></li>
+    </ol>
+    <div class="menu__foot">
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <a class="menu__resume" href="assets/Som-Pande-Resume.pdf" target="_blank" rel="noopener">Resume <span aria-hidden="true">↗</span></a>
+    </div>
+    <img class="menu__wave" src="assets/about/avatar-wave.webp" alt="" width="1010" height="1536" loading="lazy">
+  </div>
+
+  <section class="hero" id="top" aria-labelledby="hero-title" data-where="Som Pande">
+    <h1 id="hero-title" class="visually-hidden">Som Pande: engineer, builder</h1>
+
+    <div class="hero__stage">
+
+      <!-- Soft, blurred giant type far behind everything; rows drift sideways
+           at different speeds as you scroll. -->
+      <div class="hero__echo" aria-hidden="true">
+        <p class="hero__echo-row">ENGINEER · BUILDER · ENGINEER · BUILDER · ENGINEER · BUILDER ·</p>
+        <p class="hero__echo-row">ENGINEER · BUILDER · ENGINEER · BUILDER · ENGINEER · BUILDER ·</p>
+        <p class="hero__echo-row">ENGINEER · BUILDER · ENGINEER · BUILDER · ENGINEER · BUILDER ·</p>
+      </div>
+
+      <!-- Giant word: starts across the whole stage, then settles into the
+           slot in the intro column and rolls through the words. -->
+      <div class="hero__words" aria-hidden="true">
+        <p class="hero__word">SOM PANDE</p>
+        <p class="hero__word">ENGINEER</p>
+        <p class="hero__word">BUILDER</p>
+      </div>
+
+      <!-- data-frames / data-aspect describe assets/hero/{desktop,mobile}/*.webp -->
+      <canvas class="hero__canvas" aria-hidden="true" data-frames="177" data-aspect="1.3389"></canvas>
+
+      <!-- Lens dive: dark glass, the greeting, then the page clearing in. -->
+      <div class="dive" aria-hidden="true">
+        <div class="dive__glass"></div>
+        <p class="greet dive__greet">Hey,<br>I’m Som.</p>
+        <!-- The page sweeps across the lens with a dark copy of the greeting. -->
+        <div class="dive__page"><p class="greet">Hey,<br>I’m Som.</p></div>
+      </div>
+
+      <div class="hero__intro">
+        <div class="hero__slot"></div>
+        <span class="hero__rule" data-reveal></span>
+        <p class="hero__lede" data-reveal>AI engineer</p>
+      </div>
+    </div>
+  </section>
+
+  <main class="chapters">
+    <!-- ===== About =====
+         With motion, this pins and plays one short line at a time; its first
+         screen overlaps the end of the hero so it takes over exactly where the
+         lens dive finishes. Without motion it's a simple stacked intro. -->
+    <section class="about" id="about" aria-labelledby="about-title" data-where="About">
+      <div class="about__stage">
+        <p class="tag about__tag">About</p>
+        <div class="about__beats" data-beats>
+          <h2 class="greet about__beat" id="about-title">Hey,<br>I’m Som.</h2>
+          <p class="about__beat">AI engineer by profession, <em>AI&nbsp;nerd by choice.</em></p>
+          <p class="about__beat">Most days I’m building AI systems that <em>actually hold up.</em></p>
+          <p class="about__beat">The rest of the time I’m designing websites that go a little extra <em>(yes,&nbsp;including this&nbsp;one)…</em></p>
+          <p class="about__beat">…or shipping side projects that <em>started as a “what&nbsp;if.”</em></p>
+          <p class="about__beat about__beat--lines">
+            <span>Engineer by <em>training.</em></span>
+            <span>Builder by <em>habit.</em></span>
+          </p>
+        </div>
+        <div class="about__figure" data-about-figure>
+          <div class="about__glow" aria-hidden="true"></div>
+          <div class="about__pose">
+            <img src="assets/about/avatar-wave.webp" alt="Som's avatar waving hello" width="1010" height="1536">
+          </div>
+          <!-- With motion: the avatar's performance, scrubbed by scroll. -->
+          <canvas class="about__canvas" aria-hidden="true" data-frames="232" data-aspect="0.7527" data-rest-frames="14,52,92,124,150,224"></canvas>
+        </div>
+        <p class="about__cue" aria-hidden="true">Scroll <span>↓</span></p>
+      </div>
+    </section>
+
+    <!-- ===== 01 · Engineer ===== -->
+    <section class="chapter" id="engineer" aria-labelledby="engineer-title" data-where="01 · Engineer">
+
+      <!-- Opener: letters assemble as it scrolls in; "01" rolls like an odometer. -->
+      <header class="opener" data-opener>
+        <p class="opener__num"><span data-odo="01">01</span></p>
+        <h2 class="opener__title" id="engineer-title" data-scatter>Engineer</h2>
+        <p class="opener__lede">AI systems that hold up in production.</p>
+      </header>
+
+      <!-- Automation: the panel opens up; numbers spin like a slot machine. -->
+      <article class="automation" aria-labelledby="automation-title">
+        <div class="automation__panel" data-panel>
+          <div class="automation__copy">
+            <p class="tag">Workflow automation</p>
+            <h3 class="automation__title" id="automation-title">Retired a paid platform. Kept every workflow.</h3>
+            <p class="automation__body">Replaced a paid automation platform with a Python and OpenAI system that maps each workflow as a graph, cutting LLM calls by 40% without losing accuracy.</p>
+          </div>
+          <!-- The paid platform's tangle sorts itself into one clean graph as
+               the page scrolls; the LLM calls (dots) thin out by 40%. -->
+          <figure class="flow" aria-hidden="true">
+            <svg class="flow__svg" viewBox="0 0 560 250"></svg>
+            <figcaption class="flow__legend"><span class="flow__dot"></span>LLM calls: <b data-calls>6</b><span class="flow__sep">·</span>workflow steps: 12</figcaption>
+          </figure>
+          <dl class="automation__rows" data-rows>
+            <div class="automation__row">
+              <dt class="automation__num"><span data-odo="150+">150+</span></dt>
+              <dd>workflows<br>migrated</dd>
+              <span class="automation__rule" aria-hidden="true"></span>
+            </div>
+            <div class="automation__row">
+              <dt class="automation__num automation__num--accent"><span data-odo="0" data-odo-dir="down">0</span></dt>
+              <dd>licence<br>cost</dd>
+              <span class="automation__rule" aria-hidden="true"></span>
+            </div>
+            <div class="automation__row">
+              <dt class="automation__num"><span data-calls-pct aria-label="−40%">−40%</span></dt>
+              <dd>LLM API<br>calls</dd>
+            </div>
+          </dl>
+        </div>
+      </article>
+
+      <!-- Also shipped: two smaller wins. The cards converge from the sides;
+           card 1 is scanned and "cleaned", card 2 runs like a test suite. -->
+      <section class="also" aria-labelledby="also-title">
+        <div class="also__head">
+          <h3 class="tag also__tag" id="also-title" data-tracking>Also shipped</h3>
+          <span class="also__note">Two quick wins</span>
+        </div>
+        <div class="also__grid" data-also>
+          <article class="mini mini--data" data-scan>
+            <div class="mini__dots" aria-hidden="true"></div>
+            <span class="mini__scan" aria-hidden="true"></span>
+            <p class="mini__kicker">Data at scale</p>
+            <p class="mini__big"><span class="mini__word" data-decode>Millions</span><small>of data points</small></p>
+            <div class="mini__copy">
+              <h4 class="mini__title">Social posts, cleaned and scored.</h4>
+              <p class="mini__body">A pipeline that extracts and preprocesses data across social media platforms, sharpening sentiment-analysis accuracy and speed.</p>
+              <ul class="chips" aria-label="Built with"><li>Python</li><li>NLP</li><li>Data pipelines</li></ul>
+            </div>
+          </article>
+
+          <article class="mini mini--tests" data-tests>
+            <p class="mini__kicker">Production backend</p>
+            <div class="mini__top">
+              <div>
+                <p class="mini__big"><span class="mini__num" data-count-to="90" aria-label="90%">90%</span><small>test coverage</small></p>
+                <div class="ticks" aria-hidden="true">
+                  <span class="tick is-on">✓</span><span class="tick is-on">✓</span><span class="tick is-on">✓</span><span class="tick is-on">✓</span><span class="tick is-on">✓</span><span class="tick is-on">✓</span><span class="tick is-on">✓</span><span class="tick is-on">✓</span><span class="tick is-on">✓</span><span class="tick"></span>
+                </div>
+              </div>
+              <svg class="ring" viewBox="0 0 120 120" aria-hidden="true">
+                <circle class="ring__track" cx="60" cy="60" r="50" />
+                <circle class="ring__fill" cx="60" cy="60" r="50" pathLength="1" stroke-dasharray="0.9 1" />
+              </svg>
+            </div>
+            <div class="mini__copy">
+              <h4 class="mini__title">APIs built to be trusted.</h4>
+              <p class="mini__body">Modular FastAPI services for a supply-chain platform, tested end to end with Pytest.</p>
+              <ul class="chips" aria-label="Built with"><li>FastAPI</li><li>Pytest</li><li>REST APIs</li></ul>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Teaching: one spark divides into forty seats, and a wave turns each
+           curious "?" into a builder while the curriculum runs. -->
+      <section class="teach" aria-labelledby="teach-title" data-teach>
+        <div class="teach__stage">
+          <div class="teach__copy">
+            <p class="tag teach__tag">Teaching</p>
+            <h3 class="teach__title" id="teach-title">Then passes it&nbsp;on.<span class="teach__origin" aria-hidden="true"></span></h3>
+            <p class="teach__line">Forty minds came in curious and left as builders, now quietly reshaping how their teams think, decide and deliver.</p>
+            <ul class="teach__stats">
+              <li data-stat="minds"><b>40</b> minds</li>
+              <li data-stat="programs"><b>2</b> programs</li>
+              <li data-stat="path"><b>Python → LLMOps</b></li>
+            </ul>
+          </div>
+          <div class="teach__field" aria-hidden="true">
+            <p class="teach__topic"><span class="teach__now">Now teaching · </span><em>Capstone + certification</em></p>
+            <div class="teach__seats"></div>
+            <div class="teach__sparks"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hand-off: lines wipe in, then the pill floods the screen. -->
+      <div class="handoff" data-handoff>
+        <div class="handoff__stage">
+          <p class="handoff__line">
+            <span class="handoff__a">Engineering is half the job.</span>
+            <span class="handoff__b">The other half is shipping.</span>
+          </p>
+          <span class="handoff__next"><span class="handoff__flood" aria-hidden="true"></span><span class="handoff__label">02 / Builder →</span></span>
+          <p class="handoff__reveal" aria-hidden="true"><span class="handoff__num">02</span><span class="handoff__word">Builder</span><span class="handoff__tagline">Off the clock, still building.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter builder" id="builder" aria-labelledby="builder-title" data-where="02 · Builder">
+
+      <!-- Opener for visitors without motion. With motion it's hidden: the
+           Engineer hand-off's flood reveals BUILDER instead, resolving out of
+           vertical bars like sound becoming a word (js/builder.js). -->
+      <header class="opener b-opener">
+        <p class="opener__num">02</p>
+        <h2 class="opener__title b-opener__title" id="builder-title" aria-label="Builder">Builder</h2>
+        <div class="b-opener__lede">
+          <p class="b-opener__line">Off the clock, <em>still building.</em></p>
+          <p class="b-opener__note">Personal projects: things people hear, use and talk&nbsp;to.</p>
+        </div>
+      </header>
+
+      <!-- HRX: headline pops in, screenshot tips upright,
+           sticker slaps on. -->
+      <article class="hrx" aria-labelledby="hrx-title">
+        <p class="tag">HRX · AI hiring platform</p>
+        <h3 class="hrx__title" id="hrx-title" data-words>Twelve agents. One hiring decision. Zero blind trust.</h3>
+
+        <div class="hrx__stage" data-tilt>
+          <div class="hrx__glow" aria-hidden="true"><div class="hrx__glow-inner"></div></div>
+          <div class="hrx__shot">
+            <span class="browser">
+              <span class="browser__bar" aria-hidden="true"><i></i><i></i><i></i></span>
+              <img src="assets/work/hrx-landing.webp" alt="HRX homepage: Automate your hiring, with a candidate match card" width="1600" height="922" loading="lazy">
+            </span>
+          </div>
+          <div class="sticker" aria-hidden="true">
+            <div class="sticker__face">
+              <span class="sticker__num">60%</span>
+              <span class="sticker__label">faster<br>time&#8209;to&#8209;hire<br>in pilot</span>
+            </div>
+          </div>
+          <p class="visually-hidden">60% faster time-to-hire in pilot.</p>
+        </div>
+
+        <ol class="cards" data-cards>
+          <li class="card">
+            <span class="card__num" data-odo="01">01</span>
+            <h4 class="card__title">Specialists in parallel</h4>
+            <p class="card__body">One agent reads the résumé; three check role fit, GitHub and the web, and skills at once; a verdict agent weighs it all.</p>
+          </li>
+          <li class="card">
+            <span class="card__num" data-odo="02">02</span>
+            <h4 class="card__title">An interview that adapts</h4>
+            <p class="card__body">Topics planned per candidate, tested through conversation (voice or text) or live coding, with difficulty shifting on every answer.</p>
+          </li>
+          <li class="card">
+            <span class="card__num" data-odo="03">03</span>
+            <h4 class="card__title">Critics that check the graders</h4>
+            <p class="card__body">Two adversarial agents audit every grade and the final report before a human sees it.</p>
+          </li>
+        </ol>
+        <p class="hrx__engine"><strong>Built on a custom agent engine</strong>, not a framework.</p>
+      </article>
+
+      <!-- VoiceAI: pinned. The page's lines flatten into one line, the line
+           starts to speak, and the waveform becomes a player for real clips. -->
+      <article class="voice" aria-labelledby="voice-title" data-voice>
+        <div class="voice__stage">
+          <div class="voice__copy">
+            <p class="tag">VoiceAI</p>
+            <h3 class="voice__title" id="voice-title">Any document, retold as something worth listening to.</h3>
+            <p class="voice__body">An LLM rewrites the page into a spoken script, then a voice brings it to life: one narrator or two hosts, in any of twelve tones.</p>
+            <ul class="voice__facts">
+              <li><b>4</b> formats</li>
+              <li><b>12</b> tones</li>
+              <li><b>3</b> lengths</li>
+              <li><b>2</b> voices max</li>
+            </ul>
+            <div class="voice__chips" role="group" aria-label="Choose a sample">
+              <button type="button" class="voice__chip is-on" data-clip="documentary" aria-pressed="true">Documentary</button>
+              <button type="button" class="voice__chip" data-clip="podcast" aria-pressed="false">Podcast</button>
+              <button type="button" class="voice__chip" data-clip="truecrime" aria-pressed="false">True crime</button>
+            </div>
+          </div>
+          <div class="voice__card">
+            <p class="voice__doc-title" aria-hidden="true">The page that learned to speak</p>
+            <div class="voice__wave" role="slider" tabindex="0" aria-label="Seek" aria-valuemin="0" aria-valuemax="59" aria-valuenow="0" aria-valuetext="0:00"></div>
+            <div class="voice__script" aria-live="off"></div>
+            <div class="voice__player">
+              <button type="button" class="voice__play" aria-label="Play the Documentary sample">
+                <svg class="voice__icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>
+                <svg class="voice__icon-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor"/></svg>
+              </button>
+              <button type="button" class="voice__back" aria-label="Back 10 seconds">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.34-5.66" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M3.5 3.5v4.5H8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span aria-hidden="true">10s</span>
+              </button>
+              <p class="voice__meta"><span class="voice__time">0:00 / 0:59</span> · <span class="voice__who">Documentary · George</span></p>
+            </div>
+            <audio class="voice__audio" preload="none"></audio>
+          </div>
+        </div>
+      </article>
+
+      <!-- Voice agents: one stream of inquiries splits into ribbons sized to
+           the real numbers; each label rides its ribbon's tip. -->
+      <article class="agents" aria-labelledby="agents-title" data-agents>
+        <div class="agents__copy">
+          <p class="tag">Voice agents</p>
+          <h3 class="agents__title" id="agents-title">Picks up every call. Books the meeting. Knows when to hand over.</h3>
+          <p class="agents__body">Phone agents qualify leads and answer questions; chat and email agents cover the rest, and meetings land straight in the calendar.</p>
+          <dl class="agents__stats">
+            <div><dt>100+</dt><dd>leads handled</dd></div>
+            <div class="is-accent"><dt>65%</dt><dd>of inquiries resolved without a human</dd></div>
+          </dl>
+          <ul class="chips" aria-label="Built with"><li>Retell</li><li>ElevenLabs</li><li>Twilio</li><li>n8n</li><li>Calendly</li></ul>
+        </div>
+        <figure class="flowsplit" aria-hidden="true">
+          <p class="flowsplit__in">Every inquiry: calls, chats, emails</p>
+          <svg class="flowsplit__svg" viewBox="0 0 400 340" preserveAspectRatio="none">
+            <defs><clipPath id="flowsplit-clip"><rect class="flowsplit__reveal" x="0" y="-40" width="400" height="420"/></clipPath></defs>
+            <g clip-path="url(#flowsplit-clip)">
+              <path class="flowsplit__a"/>
+              <path class="flowsplit__b"/>
+            </g>
+          </svg>
+          <p class="flowsplit__label flowsplit__label--a"><b>65%</b>resolved by AI</p>
+          <p class="flowsplit__label flowsplit__label--b"><b>35%</b>handed to a human</p>
+        </figure>
+      </article>
+
+      <!-- Advisory: a San Francisco AI startup (the role only, never the
+           product). The headline arrives a little unsteady and settles level;
+           the details come into focus. -->
+      <article class="adv" aria-labelledby="adv-title" data-adv>
+        <div class="adv__copy">
+          <p class="tag">San Francisco AI startup</p>
+          <h3 class="adv__title" id="adv-title"><span>Lending</span> <span>a</span> <span>steady</span> <span>hand</span> <em><span>to</span> <span>a</span> <span>young</span> <span>idea.</span></em></h3>
+          <span class="adv__level" aria-hidden="true"></span>
+          <p class="adv__body">Shaping the thinking behind an early-stage AI product, and helping bring it to&nbsp;life.</p>
+        </div>
+        <dl class="adv__spec">
+          <div><dt>Role</dt><dd>AI Advisor &amp; Contributor</dd></div>
+          <div><dt>Team</dt><dd>Early-stage startup</dd></div>
+          <div><dt>Based in</dt><dd>San Francisco</dd></div>
+          <div><dt>Year</dt><dd>2026</dd></div>
+        </dl>
+      </article>
+
+      <!-- Hand-off: "call ended". The page squeezes into the navbar island,
+           which hangs up, and the next chapter opens. -->
+      <div class="callend" data-callend>
+        <div class="callend__stage">
+          <div class="callend__page" aria-hidden="true">
+            <p class="callend__echo">Projects&nbsp;end.<br><em>The habit doesn&rsquo;t.</em></p>
+          </div>
+          <p class="callend__pill" aria-hidden="true"><span class="callend__face"><img src="assets/nav/face.webp" alt="" width="30" height="30"></span><span class="callend__red"></span>Call ended</p>
+          <p class="callend__next"><span class="callend__word">Experience</span><span class="callend__headline">Time flies. <em>Here&rsquo;s where it&nbsp;stopped.</em></span></p>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="chapter experience" id="experience" aria-labelledby="experience-title" data-where="Experience" data-exp>
+      <div class="exp__stage">
+        <p class="tag exp__tag" id="experience-title">Experience</p>
+
+        <!-- The time-dial: the top of a large wheel (js/experience.js draws it).
+             Scrolling spins it between stops; at each stop it locks. -->
+        <div class="exp__dial" aria-hidden="true">
+          <svg class="exp__svg"></svg>
+          <span class="exp__year">2019</span>
+        </div>
+
+        <ol class="exp__stops">
+          <li class="exp__stop" data-y="2019.6" data-short="B.Tech">
+            <p class="exp__when">2019</p>
+            <h3 class="exp__title">B.Tech, <em>Computer Science Engineering</em></h3>
+            <p class="exp__detail">Shiv Nadar Institute of Eminence · 2019 – 2023</p>
+          </li>
+          <li class="exp__stop" data-y="2023.5">
+            <p class="exp__when">2023</p>
+            <h3 class="exp__title">Graduated</h3>
+            <p class="exp__detail">B.Tech, Computer Science Engineering · Shiv Nadar Institute of Eminence</p>
+          </li>
+          <li class="exp__stop" data-y="2024.0" data-short="KPMG Lighthouse">
+            <p class="exp__when">2024</p>
+            <h3 class="exp__title">AI Engineer · <em>KPMG Lighthouse</em></h3>
+            <p class="exp__detail">Workflow automation, data pipelines and production APIs · 2024 – 2025</p>
+            <a class="exp__go" href="#engineer">See 01 Engineer ↑</a>
+          </li>
+          <li class="exp__stop" data-y="2025.92" data-short="PwC IDAC">
+            <p class="exp__when">2025</p>
+            <h3 class="exp__title">Associate AI Engineer · <em>PwC IDAC</em></h3>
+            <p class="exp__detail">AI training programs for client teams · 2025 – present</p>
+            <a class="exp__go" href="#engineer">See 01 Engineer ↑</a>
+          </li>
+          <li class="exp__stop" data-y="2026.42" data-short="SF AI startup">
+            <p class="exp__when">2026</p>
+            <h3 class="exp__title">AI Advisor &amp; Contributor · <em>San Francisco AI startup</em></h3>
+            <p class="exp__detail">Early-stage AI product · 2026</p>
+          </li>
+          <li class="exp__stop exp__stop--now" data-y="2026.8" data-short="Now">
+            <p class="exp__when">Now</p>
+            <h3 class="exp__title">Current role</h3>
+            <ul class="exp__roles">
+              <li><small>2025 – present</small><b>PwC IDAC</b><span>Associate AI Engineer</span></li>
+            </ul>
+            <p class="exp__cert"><b>Microsoft Certified</b> · Azure AI Engineer Associate</p>
+            <p class="exp__otc">Off the clock: All India Open badminton, state-level table tennis, a good book, a new city.</p>
+          </li>
+        </ol>
+
+        <div class="exp__foot">
+          <button type="button" class="exp__btn exp__prev" aria-label="Previous stop">←</button>
+          <span class="exp__dots" aria-hidden="true"></span>
+          <button type="button" class="exp__btn exp__next" aria-label="Next stop">→</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter contact" id="contact" aria-labelledby="contact-title" data-where="Contact" data-contact>
+      <div class="ct__stage">
+        <header class="ct__head">
+          <p class="tag">Contact</p>
+          <h2 class="ct__title" id="contact-title">Got a &ldquo;what if&rdquo;? <em>Let&rsquo;s make it real.</em></h2>
+        </header>
+
+        <!-- The navbar island glides here and expands into this card
+             (js/contact.js). The shell is the growing shape; the card's
+             content arrives once it has grown. -->
+        <div class="ct__shell" aria-hidden="true"></div>
+        <span class="ct__pill" aria-hidden="true"><img src="assets/nav/face.webp" alt="" width="36" height="36"><i></i>Contact</span>
+
+        <div class="ct__card">
+          <div class="ct__who">
+            <img class="ct__face" src="assets/nav/face.webp" alt="" width="64" height="64">
+            <div>
+              <p class="ct__name">Som Pande</p>
+              <p class="ct__role">AI Engineer</p>
+            </div>
+          </div>
+
+          <!-- Messages go to an Apps Script web app that emails them to Som
+               (scripts/contact-form.gs). Set data-endpoint to its URL. -->
+          <form class="ct__form" data-endpoint="https://script.google.com/macros/s/AKfycbzip0zafC5NlV3swNZ_P3oGSY9q13Hzq6UzP9oUOxv_i7o-DlwHs48N-fmIJVIi0QXV/exec" novalidate>
+            <label class="ct__field">
+              <span>Your name</span>
+              <input name="name" type="text" autocomplete="name" placeholder="Jane Doe" required maxlength="100">
+            </label>
+            <label class="ct__field">
+              <span>Your email</span>
+              <input name="email" type="email" autocomplete="email" placeholder="you@company.com" required maxlength="200">
+            </label>
+            <label class="ct__field ct__field--msg">
+              <span>Message</span>
+              <textarea name="message" rows="3" placeholder="What&rsquo;s on your mind?" required maxlength="5000"></textarea>
+            </label>
+            <!-- A trap for bots: hidden from people and screen readers. -->
+            <label class="ct__trap" aria-hidden="true">Website <input name="website" type="text" tabindex="-1" autocomplete="off"></label>
+            <div class="ct__row">
+              <a class="ct__link" href="https://www.linkedin.com/in/sompande" target="_blank" rel="noopener">LinkedIn <span aria-hidden="true">↗</span></a>
+              <a class="ct__link" href="assets/Som-Pande-Resume.pdf" target="_blank" rel="noopener">Résumé <span aria-hidden="true">↓</span></a>
+              <button class="ct__send" type="submit">Send message <span aria-hidden="true">→</span></button>
+            </div>
+            <p class="ct__status" role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="ct__done" hidden>
+            <span class="ct__tick" aria-hidden="true">✓</span>
+            <p class="ct__done-title">Message sent</p>
+            <p class="ct__done-body">It&rsquo;s in Som&rsquo;s inbox. Expect a reply soon.</p>
+            <button class="ct__again" type="button">Send another</button>
+          </div>
+        </div>
+
+        <footer class="ct__foot">
+          <span>© 2026 Som Pande</span>
+          <span>Designed and built by hand</span>
+          <a href="#top">Back to top ↑</a>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+  <script src="js/hero.js?v=16"></script>
+  <script src="https://cdn.jsdelivr.net/npm/motion@14.0.0/dist/motion.js"></script>
+  <script src="js/chapters.js?v=15"></script>
+  <script src="js/nav.js?v=8"></script>
+  <script src="js/about.js?v=15"></script>
+  <script src="js/automation.js?v=4"></script>
+  <script src="js/teach.js?v=5"></script>
+  <script src="js/builder.js?v=22"></script>
+  <script src="js/experience.js?v=15"></script>
+  <script src="js/contact.js?v=6"></script>
+</body>
+</html>
